@@ -88,7 +88,7 @@ export function Scene({ brightness }) {
         {/* Sofa */}
         <Draggable initialPosition={[2, 0.4, 0]}>
           <Box args={[3, 0.8, 1.2]} castShadow receiveShadow>
-            <meshStandardMaterial color="#885555" />
+            <meshStandardMaterial color="#885555" roughness={0.2} />
           </Box>
         </Draggable>
 
@@ -102,21 +102,21 @@ export function Scene({ brightness }) {
         {/* Chair */}
         <Draggable initialPosition={[-2.5, 0.4, 0]}>
           <Box args={[1, 0.8, 1]} rotation={[0, 0.5, 0]} castShadow receiveShadow>
-            <meshStandardMaterial color="#555566" />
+            <meshStandardMaterial color="#555566" roughness={0.2} />
           </Box>
         </Draggable>
 
         {/* Ottoman */}
         <Draggable initialPosition={[-2.2, 0.25, 1.5]}>
           <Box args={[0.8, 0.5, 0.8]} rotation={[0, 0.2, 0]} castShadow receiveShadow>
-            <meshStandardMaterial color="#665555" />
+            <meshStandardMaterial color="#665555" roughness={0.2} />
           </Box>
         </Draggable>
 
         {/* TV Stand / Cabinet */}
         <Draggable initialPosition={[0, 0.3, -4]}>
           <Box args={[6, 0.6, 0.8]} castShadow receiveShadow>
-            <meshStandardMaterial color="#111" />
+            <meshStandardMaterial color="#111" roughness={0.2} />
           </Box>
         </Draggable>
 
