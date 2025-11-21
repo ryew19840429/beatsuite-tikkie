@@ -44,12 +44,12 @@ const HangingLamp = React.memo(function HangingLamp({ position, brightness, colo
     <group ref={groupRef} position={[position[0], 4.5, position[2]]}>
       {/* Pivot point is at (0,0,0) of this group, which is at y=4.5 world space */}
       {/* Wire */}
-      <Cylinder args={[0.02, 0.02, 2]} position={[0, -1, 0]}>
+      <Cylinder args={[0.02, 0.02, 2, 6]} position={[0, -1, 0]}>
         <meshStandardMaterial color="black" />
       </Cylinder>
 
       {/* Bulb/Shade - castShadow={false} to prevent blocking its own light */}
-      <Sphere args={[0.15]} position={[0, -2, 0]} castShadow={false}>
+      <Sphere args={[0.15, 8, 8]} position={[0, -2, 0]} castShadow={false}>
         <meshStandardMaterial color="white" emissive={color} emissiveIntensity={brightness + intensity * 0.5} />
       </Sphere>
 
@@ -60,7 +60,7 @@ const HangingLamp = React.memo(function HangingLamp({ position, brightness, colo
         color={color}
         distance={0}
         castShadow
-        shadow-mapSize={[256, 256]}
+        shadow-mapSize={[64, 64]}
         shadow-normalBias={0.04}
         shadow-bias={-0.0001}
       />
@@ -87,7 +87,7 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
 
   return (
     <>
-      <SoftShadows size={25} samples={4} focus={0} />
+      {/* <SoftShadows size={25} samples={4} focus={0} /> */}
       <OrbitControls enabled={!isDragging} enablePan={false} minDistance={5} maxDistance={15} />
 
       {/* Ambient Light for base visibility */}
@@ -101,14 +101,14 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
         distance={5}
         decay={2}
         castShadow
-        shadow-mapSize={[512, 512]}
+        shadow-mapSize={[128, 128]}
         shadow-normalBias={0.04}
         shadow-bias={-0.0001}
       />
 
       <Selection>
-        <EffectComposer autoClear={false} multisampling={2}>
-          <Outline blur edgeStrength={10} width={1000} visibleEdgeColor="white" hiddenEdgeColor="white" />
+        <EffectComposer autoClear={false} multisampling={0}>
+          <Outline edgeStrength={10} width={1000} visibleEdgeColor="white" hiddenEdgeColor="white" />
         </EffectComposer>
 
         {/* Hanging Lamps */}
@@ -119,7 +119,7 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
         {/* Wall Light on Left Wall */}
         <group position={[-4.95, 2, 0]}>
           {/* Wall sconce fixture - flat circular cover */}
-          <Cylinder args={[0.3, 0.3, 0.1, 32]} rotation={[0, 0, Math.PI / 2]} castShadow={false}>
+          <Cylinder args={[0.3, 0.3, 0.1, 16]} rotation={[0, 0, Math.PI / 2]} castShadow={false}>
             <meshStandardMaterial color="white" emissive={lampColor} emissiveIntensity={brightness + lampIntensity * 0.5} />
           </Cylinder>
           {/* Wall light source */}
