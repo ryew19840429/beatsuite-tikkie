@@ -21,7 +21,7 @@ function Furniture({ children, initialPosition }) {
   );
 }
 
-function HangingLamp({ position, brightness, color, isSwinging, offset = 0 }) {
+function HangingLamp({ position, brightness, color, isSwinging, offset = 0, intensity = 1 }) {
   const groupRef = useRef();
 
   useFrame((state) => {
@@ -37,7 +37,8 @@ function HangingLamp({ position, brightness, color, isSwinging, offset = 0 }) {
     }
   });
 
-  const mainLightIntensity = brightness * 30;
+  // Base intensity * user slider (decoupled from global brightness)
+  const lightIntensity = 30 * intensity;
 
   return (
     <group ref={groupRef} position={[position[0], 4.5, position[2]]}>
@@ -47,15 +48,15 @@ function HangingLamp({ position, brightness, color, isSwinging, offset = 0 }) {
         <meshStandardMaterial color="black" />
       </Cylinder>
 
-      {/* Bulb/Shade */}
-      <Sphere args={[0.15]} position={[0, -2, 0]}>
-        <meshStandardMaterial color="white" emissive={color} emissiveIntensity={brightness} />
+      {/* Bulb/Shade - castShadow={false} to prevent blocking its own light */}
+      <Sphere args={[0.15]} position={[0, -2, 0]} castShadow={false}>
+        <meshStandardMaterial color="white" emissive={color} emissiveIntensity={brightness + intensity * 0.5} />
       </Sphere>
 
       {/* Light Source */}
       <pointLight
-        position={[0, -2, 0]}
-        intensity={mainLightIntensity}
+        position={[0, -2.2, 0]}
+        intensity={lightIntensity}
         color={color}
         castShadow
         shadow-bias={-0.0001}
@@ -64,7 +65,7 @@ function HangingLamp({ position, brightness, color, isSwinging, offset = 0 }) {
   );
 }
 
-export function Scene({ brightness, isSwinging }) {
+export function Scene({ brightness, isSwinging, lampIntensity }) {
   // Calculate light intensity based on brightness prop (0 to 1)
   const ambientIntensity = brightness * 4.5;
   const mainLightIntensity = brightness * 30;
@@ -93,9 +94,9 @@ export function Scene({ brightness, isSwinging }) {
         </EffectComposer>
 
         {/* Hanging Lamps */}
-        <HangingLamp position={[-1.5, 0, 0]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={0} />
-        <HangingLamp position={[0, 0, 0]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={1} />
-        <HangingLamp position={[1.5, 0, 0]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={2} />
+        <HangingLamp position={[-1.5, 0, 0]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={0} intensity={lampIntensity} />
+        <HangingLamp position={[0, 0, 0]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={1} intensity={lampIntensity} />
+        <HangingLamp position={[1.5, 0, 0]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={2} intensity={lampIntensity} />
 
         {/* Room Structure */}
         <group position={[0, -1.5, 0]}>

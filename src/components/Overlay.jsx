@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging }) {
+export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, lampIntensity, setLampIntensity }) {
     return (
         <div style={{
             position: 'absolute',
@@ -59,6 +59,27 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging }
                             }}
                         />
                         <span style={{ fontSize: '1.2rem' }}>☀️</span>
+                    </div>
+                </div>
+
+                <div className="control-group" style={{ marginTop: '1rem' }}>
+                    <label style={{ color: 'white', marginBottom: '8px', display: 'block' }}>Lamp Intensity</label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <span style={{ fontSize: '1.2rem' }}>💡</span>
+                        <input
+                            type="range"
+                            min="0"
+                            max="3"
+                            step="0.1"
+                            value={lampIntensity}
+                            onChange={(e) => setLampIntensity(parseFloat(e.target.value))}
+                            style={{
+                                flex: 1,
+                                accentColor: 'white',
+                                cursor: 'pointer'
+                            }}
+                        />
+                        <span style={{ fontSize: '1.2rem' }}>🔥</span>
                     </div>
                 </div>
 
