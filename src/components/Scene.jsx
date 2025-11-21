@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Box, Plane, Sphere, Cylinder, SoftShadows } from '@react-three/drei';
 import { Selection, Select, EffectComposer, Outline } from '@react-three/postprocessing';
@@ -22,7 +21,50 @@ function Furniture({ children, initialPosition }) {
   );
 }
 
-export function Scene({ brightness }) {
+function HangingLamp({ position, brightness, color, isSwinging, offset = 0 }) {
+  const groupRef = useRef();
+
+  useFrame((state) => {
+    if (isSwinging && groupRef.current) {
+      // Pendulum animation: sin wave based on time
+      const time = state.clock.elapsedTime;
+      const speed = 2;
+      const amplitude = 0.2; // Radians
+      groupRef.current.rotation.z = Math.sin(time * speed + offset) * amplitude;
+    } else if (groupRef.current) {
+      // Reset rotation when not swinging
+      groupRef.current.rotation.z = 0; // Could lerp for smoothness, but snap is fine for now
+    }
+  });
+
+  const mainLightIntensity = brightness * 30;
+
+  return (
+    <group ref={groupRef} position={[position[0], 4.5, position[2]]}>
+      {/* Pivot point is at (0,0,0) of this group, which is at y=4.5 world space */}
+      {/* Wire */}
+      <Cylinder args={[0.02, 0.02, 2]} position={[0, -1, 0]}>
+        <meshStandardMaterial color="black" />
+      </Cylinder>
+
+      {/* Bulb/Shade */}
+      <Sphere args={[0.15]} position={[0, -2, 0]}>
+        <meshStandardMaterial color="white" emissive={color} emissiveIntensity={brightness} />
+      </Sphere>
+
+      {/* Light Source */}
+      <pointLight
+        position={[0, -2, 0]}
+        intensity={mainLightIntensity}
+        color={color}
+        castShadow
+        shadow-bias={-0.0001}
+      />
+    </group>
+  );
+}
+
+export function Scene({ brightness, isSwinging }) {
   // Calculate light intensity based on brightness prop (0 to 1)
   const ambientIntensity = brightness * 4.5;
   const mainLightIntensity = brightness * 30;
@@ -34,32 +76,6 @@ export function Scene({ brightness }) {
 
       {/* Ambient Light for base visibility */}
       <ambientLight intensity={ambientIntensity} />
-
-      {/* Main Ceiling Lights (Simulated as point lights) */}
-      {/* Left Lamp */}
-      <pointLight
-        position={[-1.5, 3, 0]}
-        intensity={mainLightIntensity}
-        color={lampColor}
-        castShadow
-        shadow-bias={-0.0001}
-      />
-      {/* Center Lamp */}
-      <pointLight
-        position={[0, 3, 0]}
-        intensity={mainLightIntensity}
-        color={lampColor}
-        castShadow
-        shadow-bias={-0.0001}
-      />
-      {/* Right Lamp */}
-      <pointLight
-        position={[1.5, 3, 0]}
-        intensity={mainLightIntensity}
-        color={lampColor}
-        castShadow
-        shadow-bias={-0.0001}
-      />
 
       {/* Table Lamp */}
       <pointLight
@@ -75,6 +91,11 @@ export function Scene({ brightness }) {
         <EffectComposer autoClear={false} multisampling={8}>
           <Outline blur edgeStrength={10} width={1000} visibleEdgeColor="white" hiddenEdgeColor="white" />
         </EffectComposer>
+
+        {/* Hanging Lamps */}
+        <HangingLamp position={[-1.5, 0, 0]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={0} />
+        <HangingLamp position={[0, 0, 0]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={1} />
+        <HangingLamp position={[1.5, 0, 0]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={2} />
 
         {/* Room Structure */}
         <group position={[0, -1.5, 0]}>
@@ -143,33 +164,8 @@ export function Scene({ brightness }) {
               <meshStandardMaterial color="#111" roughness={0.2} />
             </Box>
           </Furniture>
-
-          {/* Hanging Lamps (Visuals) */}
-          <group position={[0, 4.5, 0]}>
-            <Cylinder args={[0.02, 0.02, 2]} position={[-1.5, 0, 0]}>
-              <meshStandardMaterial color="black" />
-            </Cylinder>
-            <Sphere args={[0.15]} position={[-1.5, -1, 0]}>
-              <meshStandardMaterial color="white" emissive={lampColor} emissiveIntensity={brightness} />
-            </Sphere>
-
-            <Cylinder args={[0.02, 0.02, 2]} position={[0, 0, 0]}>
-              <meshStandardMaterial color="black" />
-            </Cylinder>
-            <Sphere args={[0.15]} position={[0, -1, 0]}>
-              <meshStandardMaterial color="white" emissive={lampColor} emissiveIntensity={brightness} />
-            </Sphere>
-
-            <Cylinder args={[0.02, 0.02, 2]} position={[1.5, 0, 0]}>
-              <meshStandardMaterial color="black" />
-            </Cylinder>
-            <Sphere args={[0.15]} position={[1.5, -1, 0]}>
-              <meshStandardMaterial color="white" emissive={lampColor} emissiveIntensity={brightness} />
-            </Sphere>
-          </group>
         </group>
       </Selection>
     </>
   );
 }
-

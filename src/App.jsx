@@ -5,6 +5,7 @@ import { Overlay } from './components/Overlay';
 
 function App() {
   const [brightness, setBrightness] = useState(0.5);
+  const [isSwinging, setIsSwinging] = useState(false);
 
   return (
     <>
@@ -14,11 +15,16 @@ function App() {
         style={{ background: '#050505' }}
       >
         <Suspense fallback={null}>
-          <Scene brightness={brightness} />
+          <Scene brightness={brightness} isSwinging={isSwinging} />
         </Suspense>
       </Canvas>
 
-      <Overlay brightness={brightness} setBrightness={setBrightness} />
+      <Overlay
+        brightness={brightness}
+        setBrightness={setBrightness}
+        isSwinging={isSwinging}
+        setIsSwinging={setIsSwinging}
+      />
     </>
   );
 }
