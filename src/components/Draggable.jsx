@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { useThree } from '@react-three/fiber';
 import { Plane } from '@react-three/drei';
 import * as THREE from 'three';
@@ -10,14 +10,16 @@ export function Draggable({ children, initialPosition = [0, 0, 0] }) {
     const planeIntersectPoint = useRef(new THREE.Vector3());
     const dragOffset = useRef(new THREE.Vector3());
 
+    // Memoize plane to avoid recreation on every event
+    const plane = useMemo(() => {
+        const normal = new THREE.Vector3(0, 1, 0);
+        const planeConstant = -initialPosition[1];
+        return new THREE.Plane(normal, planeConstant);
+    }, [initialPosition]);
+
     const onPointerDown = (e) => {
         e.stopPropagation();
-        // Calculate the offset between the click point and the object's position
-        // We need to raycast against a virtual plane at the object's height
-        const normal = new THREE.Vector3(0, 1, 0);
-        const planeConstant = -initialPosition[1]; // Plane at y = object height
-        const plane = new THREE.Plane(normal, planeConstant);
-
+        // Use memoized plane for raycasting
         raycaster.setFromCamera(e.pointer, camera);
         raycaster.ray.intersectPlane(plane, planeIntersectPoint.current);
 
@@ -31,10 +33,7 @@ export function Draggable({ children, initialPosition = [0, 0, 0] }) {
         if (!isDragging) return;
         e.stopPropagation();
 
-        const normal = new THREE.Vector3(0, 1, 0);
-        const planeConstant = -initialPosition[1];
-        const plane = new THREE.Plane(normal, planeConstant);
-
+        // Use memoized plane for raycasting
         raycaster.setFromCamera(e.pointer, camera);
         raycaster.ray.intersectPlane(plane, planeIntersectPoint.current);
 

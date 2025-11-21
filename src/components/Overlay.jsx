@@ -5,12 +5,25 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
+        let rafId = null;
+        let lastMousePos = { x: 0, y: 0 };
+
         const handleMouseMove = (e) => {
-            setMousePos({ x: e.clientX, y: e.clientY });
+            lastMousePos = { x: e.clientX, y: e.clientY };
+
+            if (!rafId) {
+                rafId = requestAnimationFrame(() => {
+                    setMousePos(lastMousePos);
+                    rafId = null;
+                });
+            }
         };
 
         window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            if (rafId) cancelAnimationFrame(rafId);
+        };
     }, []);
     return (
         <div style={{
