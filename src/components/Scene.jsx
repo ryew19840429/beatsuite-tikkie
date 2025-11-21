@@ -38,7 +38,7 @@ const HangingLamp = React.memo(function HangingLamp({ position, brightness, colo
   });
 
   // Base intensity * user slider (decoupled from global brightness)
-  const lightIntensity = 30 * intensity;
+  const lightIntensity = 60 * intensity;
 
   return (
     <group ref={groupRef} position={[position[0], 4.5, position[2]]}>
@@ -58,6 +58,7 @@ const HangingLamp = React.memo(function HangingLamp({ position, brightness, colo
         position={[0, -2.2, 0]}
         intensity={lightIntensity}
         color={color}
+        distance={0}
         castShadow
         shadow-mapSize={[256, 256]}
         shadow-normalBias={0.04}
@@ -77,6 +78,7 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
   const floorMaterial = useMemo(() => ({ color: "#333", roughness: 0.8 }), []);
   const backWallMaterial = useMemo(() => ({ color: "#554444", roughness: 1 }), []);
   const leftWallMaterial = useMemo(() => ({ color: "#222", roughness: 1 }), []);
+  const rightWallMaterial = useMemo(() => ({ color: "#333", roughness: 1 }), []);
   const sofaMaterial = useMemo(() => ({ color: "#885555", roughness: 0.2 }), []);
   const tableMaterial = useMemo(() => ({ color: "#222", roughness: 0.2 }), []);
   const chairMaterial = useMemo(() => ({ color: "#555566", roughness: 0.2 }), []);
@@ -109,9 +111,9 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
         </EffectComposer>
 
         {/* Hanging Lamps */}
-        <HangingLamp position={[-1.5, 0, 0]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={0} intensity={lampIntensity} />
-        <HangingLamp position={[0, 0, 0]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={1} intensity={lampIntensity} />
-        <HangingLamp position={[1.5, 0, 0]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={2} intensity={lampIntensity} />
+        <HangingLamp position={[-1.5, 0, -3]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={0} intensity={lampIntensity} />
+        <HangingLamp position={[0, 0, -3]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={1} intensity={lampIntensity} />
+        <HangingLamp position={[1.5, 0, -3]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={2} intensity={lampIntensity} />
 
         {/* Room Structure */}
         <group position={[0, -1.5, 0]}>
@@ -141,6 +143,16 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
             receiveShadow
           >
             <meshStandardMaterial {...leftWallMaterial} />
+          </Plane>
+
+          {/* Right Wall */}
+          <Plane
+            args={[10, 6]}
+            position={[5, 3, 0]}
+            rotation={[0, -Math.PI / 2, 0]}
+            receiveShadow
+          >
+            <meshStandardMaterial {...rightWallMaterial} />
           </Plane>
         </group>
 
