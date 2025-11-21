@@ -4,11 +4,11 @@ import { Box, Plane, Sphere, Cylinder, SoftShadows, OrbitControls } from '@react
 import { Selection, Select, EffectComposer, Outline } from '@react-three/postprocessing';
 import { Draggable } from './Draggable';
 
-const Furniture = React.memo(function Furniture({ children, initialPosition, name, setHoveredFurniture }) {
+const Furniture = React.memo(function Furniture({ children, initialPosition, name, setHoveredFurniture, setIsDragging }) {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <Draggable initialPosition={initialPosition}>
+    <Draggable initialPosition={initialPosition} setIsDragging={setIsDragging}>
       <Select enabled={hovered}>
         <group
           onPointerOver={(e) => { e.stopPropagation(); setHovered(true); setHoveredFurniture(name); }}
@@ -68,7 +68,7 @@ const HangingLamp = React.memo(function HangingLamp({ position, brightness, colo
   );
 });
 
-export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHoveredFurniture }) {
+export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHoveredFurniture, isDragging, setIsDragging }) {
   // Calculate light intensity based on brightness prop (0 to 1)
   const ambientIntensity = brightness * 4.5;
   const mainLightIntensity = brightness * 30;
@@ -88,7 +88,7 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
   return (
     <>
       <SoftShadows size={25} samples={6} focus={0} />
-      <OrbitControls enablePan={false} minDistance={5} maxDistance={15} />
+      <OrbitControls enabled={!isDragging} enablePan={false} minDistance={5} maxDistance={15} />
 
       {/* Ambient Light for base visibility */}
       <ambientLight intensity={ambientIntensity} />
@@ -179,35 +179,35 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
         {/* Furniture Placeholders */}
         <group position={[0, -1.5, 0]}>
           {/* Sofa */}
-          <Furniture initialPosition={[2, 0.4, 3]} name="Sofa" setHoveredFurniture={setHoveredFurniture}>
+          <Furniture initialPosition={[2, 0.4, 3]} name="Sofa" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
             <Box args={[3, 0.8, 1.2]} castShadow receiveShadow>
               <meshStandardMaterial {...sofaMaterial} />
             </Box>
           </Furniture>
 
           {/* Coffee Table */}
-          <Furniture initialPosition={[-0.5, 0.2, 2]} name="Coffee Table" setHoveredFurniture={setHoveredFurniture}>
+          <Furniture initialPosition={[-0.5, 0.2, 2]} name="Coffee Table" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
             <Box args={[1.5, 0.4, 1]} castShadow receiveShadow>
               <meshStandardMaterial {...tableMaterial} />
             </Box>
           </Furniture>
 
           {/* Chair */}
-          <Furniture initialPosition={[-2.5, 0.4, 0]} name="Chair" setHoveredFurniture={setHoveredFurniture}>
+          <Furniture initialPosition={[-2.5, 0.4, 0]} name="Chair" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
             <Box args={[1, 0.8, 1]} rotation={[0, 0.5, 0]} castShadow receiveShadow>
               <meshStandardMaterial {...chairMaterial} />
             </Box>
           </Furniture>
 
           {/* Ottoman */}
-          <Furniture initialPosition={[-2.2, 0.25, 1.5]} name="Ottoman" setHoveredFurniture={setHoveredFurniture}>
+          <Furniture initialPosition={[-2.2, 0.25, 1.5]} name="Ottoman" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
             <Box args={[0.8, 0.5, 0.8]} rotation={[0, 0.2, 0]} castShadow receiveShadow>
               <meshStandardMaterial {...ottomanMaterial} />
             </Box>
           </Furniture>
 
           {/* TV Stand / Cabinet */}
-          <Furniture initialPosition={[0, 0.3, -4]} name="TV Stand" setHoveredFurniture={setHoveredFurniture}>
+          <Furniture initialPosition={[0, 0.3, -4]} name="TV Stand" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
             <Box args={[6, 0.6, 0.8]} castShadow receiveShadow>
               <meshStandardMaterial {...tvStandMaterial} />
             </Box>

@@ -3,9 +3,9 @@ import { useThree } from '@react-three/fiber';
 import { Plane } from '@react-three/drei';
 import * as THREE from 'three';
 
-export function Draggable({ children, initialPosition = [0, 0, 0] }) {
+export function Draggable({ children, initialPosition = [0, 0, 0], setIsDragging }) {
     const [position, setPosition] = useState(initialPosition);
-    const [isDragging, setIsDragging] = useState(false);
+    const [isDragging, setIsDraggingLocal] = useState(false);
     const { camera, raycaster, scene } = useThree();
     const planeIntersectPoint = useRef(new THREE.Vector3());
     const dragOffset = useRef(new THREE.Vector3());
@@ -25,7 +25,8 @@ export function Draggable({ children, initialPosition = [0, 0, 0] }) {
 
         dragOffset.current.subVectors(new THREE.Vector3(...position), planeIntersectPoint.current);
 
-        setIsDragging(true);
+        setIsDraggingLocal(true);
+        if (setIsDragging) setIsDragging(true);
         e.target.setPointerCapture(e.pointerId);
     };
 
@@ -45,7 +46,8 @@ export function Draggable({ children, initialPosition = [0, 0, 0] }) {
     };
 
     const onPointerUp = (e) => {
-        setIsDragging(false);
+        setIsDraggingLocal(false);
+        if (setIsDragging) setIsDragging(false);
         e.target.releasePointerCapture(e.pointerId);
     };
 

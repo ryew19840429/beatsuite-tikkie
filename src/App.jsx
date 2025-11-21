@@ -9,6 +9,7 @@ function App() {
   const [lampIntensity, setLampIntensity] = useState(1);
   const [lampHue, setLampHue] = useState(30); // Default warm orange
   const [hoveredFurniture, setHoveredFurniture] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   return (
     <>
@@ -24,6 +25,8 @@ function App() {
             lampIntensity={lampIntensity}
             lampHue={lampHue}
             setHoveredFurniture={setHoveredFurniture}
+            isDragging={isDragging}
+            setIsDragging={setIsDragging}
           />
         </Suspense>
       </Canvas>
