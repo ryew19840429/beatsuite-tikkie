@@ -4,8 +4,8 @@ import { Box, Plane, Sphere, Cylinder, SoftShadows } from '@react-three/drei';
 
 export function Scene({ brightness }) {
   // Calculate light intensity based on brightness prop (0 to 1)
-  const ambientIntensity = brightness * 1.5;
-  const mainLightIntensity = brightness * 10;
+  const ambientIntensity = brightness * 4.5;
+  const mainLightIntensity = brightness * 30;
   const lampColor = '#ffaa77'; // Warm light
 
   return (
