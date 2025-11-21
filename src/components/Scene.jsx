@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Box, Plane, Sphere, Cylinder, SoftShadows } from '@react-three/drei';
+import { Draggable } from './Draggable';
 
 export function Scene({ brightness }) {
   // Calculate light intensity based on brightness prop (0 to 1)
@@ -85,29 +86,39 @@ export function Scene({ brightness }) {
       {/* Furniture Placeholders */}
       <group position={[0, -1.5, 0]}>
         {/* Sofa */}
-        <Box args={[3, 0.8, 1.2]} position={[2, 0.4, 0]} castShadow receiveShadow>
-          <meshStandardMaterial color="#885555" />
-        </Box>
+        <Draggable initialPosition={[2, 0.4, 0]}>
+          <Box args={[3, 0.8, 1.2]} castShadow receiveShadow>
+            <meshStandardMaterial color="#885555" />
+          </Box>
+        </Draggable>
 
         {/* Coffee Table */}
-        <Box args={[1.5, 0.4, 1]} position={[-0.5, 0.2, 1]} castShadow receiveShadow>
-          <meshStandardMaterial color="#222" roughness={0.2} />
-        </Box>
+        <Draggable initialPosition={[-0.5, 0.2, 1]}>
+          <Box args={[1.5, 0.4, 1]} castShadow receiveShadow>
+            <meshStandardMaterial color="#222" roughness={0.2} />
+          </Box>
+        </Draggable>
 
         {/* Chair */}
-        <Box args={[1, 0.8, 1]} position={[-2.5, 0.4, 0]} rotation={[0, 0.5, 0]} castShadow receiveShadow>
-          <meshStandardMaterial color="#555566" />
-        </Box>
+        <Draggable initialPosition={[-2.5, 0.4, 0]}>
+          <Box args={[1, 0.8, 1]} rotation={[0, 0.5, 0]} castShadow receiveShadow>
+            <meshStandardMaterial color="#555566" />
+          </Box>
+        </Draggable>
 
         {/* Ottoman */}
-        <Box args={[0.8, 0.5, 0.8]} position={[-2.2, 0.25, 1.5]} rotation={[0, 0.2, 0]} castShadow receiveShadow>
-          <meshStandardMaterial color="#665555" />
-        </Box>
+        <Draggable initialPosition={[-2.2, 0.25, 1.5]}>
+          <Box args={[0.8, 0.5, 0.8]} rotation={[0, 0.2, 0]} castShadow receiveShadow>
+            <meshStandardMaterial color="#665555" />
+          </Box>
+        </Draggable>
 
         {/* TV Stand / Cabinet */}
-        <Box args={[6, 0.6, 0.8]} position={[0, 0.3, -4]} castShadow receiveShadow>
-          <meshStandardMaterial color="#111" />
-        </Box>
+        <Draggable initialPosition={[0, 0.3, -4]}>
+          <Box args={[6, 0.6, 0.8]} castShadow receiveShadow>
+            <meshStandardMaterial color="#111" />
+          </Box>
+        </Draggable>
 
         {/* Hanging Lamps (Visuals) */}
         <group position={[0, 4.5, 0]}>
