@@ -42,7 +42,7 @@ export function Scene({ brightness }) {
         intensity={mainLightIntensity}
         color={lampColor}
         castShadow
-        shadow-bias={-0.001}
+        shadow-bias={-0.0001}
       />
       {/* Center Lamp */}
       <pointLight
@@ -50,7 +50,7 @@ export function Scene({ brightness }) {
         intensity={mainLightIntensity}
         color={lampColor}
         castShadow
-        shadow-bias={-0.001}
+        shadow-bias={-0.0001}
       />
       {/* Right Lamp */}
       <pointLight
@@ -58,7 +58,7 @@ export function Scene({ brightness }) {
         intensity={mainLightIntensity}
         color={lampColor}
         castShadow
-        shadow-bias={-0.001}
+        shadow-bias={-0.0001}
       />
 
       {/* Table Lamp */}
