@@ -4,7 +4,7 @@ import { Scene } from './components/Scene';
 import { Overlay } from './components/Overlay';
 
 function App() {
-  const [brightness, setBrightness] = useState(0.5);
+  const [brightness, setBrightness] = useState(0);
   const [isSwinging, setIsSwinging] = useState(false);
   const [lampIntensity, setLampIntensity] = useState(1);
   const [lampHue, setLampHue] = useState(30); // Default warm orange
