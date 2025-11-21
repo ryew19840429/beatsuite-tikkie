@@ -87,7 +87,7 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
 
   return (
     <>
-      <SoftShadows size={25} samples={6} focus={0} />
+      <SoftShadows size={25} samples={4} focus={0} />
       <OrbitControls enabled={!isDragging} enablePan={false} minDistance={5} maxDistance={15} />
 
       {/* Ambient Light for base visibility */}
@@ -107,7 +107,7 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
       />
 
       <Selection>
-        <EffectComposer autoClear={false} multisampling={4}>
+        <EffectComposer autoClear={false} multisampling={2}>
           <Outline blur edgeStrength={10} width={1000} visibleEdgeColor="white" hiddenEdgeColor="white" />
         </EffectComposer>
 
@@ -128,10 +128,6 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
             intensity={60 * lampIntensity}
             color={lampColor}
             distance={0}
-            castShadow
-            shadow-mapSize={[256, 256]}
-            shadow-normalBias={0.04}
-            shadow-bias={-0.0001}
           />
         </group>
 
