@@ -90,7 +90,7 @@ export function Scene({ brightness }) {
         </Box>
 
         {/* Coffee Table */}
-        <Box args={[1.5, 0.4, 1]} position={[0, 0.2, 1]} castShadow receiveShadow>
+        <Box args={[1.5, 0.4, 1]} position={[-0.5, 0.2, 1]} castShadow receiveShadow>
           <meshStandardMaterial color="#222" roughness={0.2} />
         </Box>
 
