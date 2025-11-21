@@ -95,12 +95,12 @@ export function Scene({ brightness }) {
         </Box>
 
         {/* Chair */}
-        <Box args={[1, 0.8, 1]} position={[-2, 0.4, 0]} rotation={[0, 0.5, 0]} castShadow receiveShadow>
+        <Box args={[1, 0.8, 1]} position={[-2.5, 0.4, 0]} rotation={[0, 0.5, 0]} castShadow receiveShadow>
           <meshStandardMaterial color="#555566" />
         </Box>
 
         {/* Ottoman */}
-        <Box args={[0.8, 0.5, 0.8]} position={[-1.5, 0.25, 1.5]} rotation={[0, 0.2, 0]} castShadow receiveShadow>
+        <Box args={[0.8, 0.5, 0.8]} position={[-2.2, 0.25, 1.5]} rotation={[0, 0.2, 0]} castShadow receiveShadow>
           <meshStandardMaterial color="#665555" />
         </Box>
 
