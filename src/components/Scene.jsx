@@ -159,14 +159,14 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
         {/* Furniture Placeholders */}
         <group position={[0, -1.5, 0]}>
           {/* Sofa */}
-          <Furniture initialPosition={[2, 0.4, 0]} name="Sofa" setHoveredFurniture={setHoveredFurniture}>
+          <Furniture initialPosition={[2, 0.4, 3]} name="Sofa" setHoveredFurniture={setHoveredFurniture}>
             <Box args={[3, 0.8, 1.2]} castShadow receiveShadow>
               <meshStandardMaterial {...sofaMaterial} />
             </Box>
           </Furniture>
 
           {/* Coffee Table */}
-          <Furniture initialPosition={[-0.5, 0.2, 1]} name="Coffee Table" setHoveredFurniture={setHoveredFurniture}>
+          <Furniture initialPosition={[-0.5, 0.2, 2]} name="Coffee Table" setHoveredFurniture={setHoveredFurniture}>
             <Box args={[1.5, 0.4, 1]} castShadow receiveShadow>
               <meshStandardMaterial {...tableMaterial} />
             </Box>
