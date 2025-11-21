@@ -2,6 +2,7 @@ import React, { useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Scene } from './components/Scene';
 import { Overlay } from './components/Overlay';
+import { ChatInterface } from './components/ChatInterface';
 
 function App() {
   const [brightness, setBrightness] = useState(0);
@@ -41,6 +42,12 @@ function App() {
         lampHue={lampHue}
         setLampHue={setLampHue}
         hoveredFurniture={hoveredFurniture}
+      />
+
+      <ChatInterface
+        setLampIntensity={setLampIntensity}
+        setLampHue={setLampHue}
+        setBrightness={setBrightness}
       />
     </>
   );
