@@ -115,6 +115,25 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
         <HangingLamp position={[0, 0, -3]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={1} intensity={lampIntensity} />
         <HangingLamp position={[1.5, 0, -3]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={2} intensity={lampIntensity} />
 
+        {/* Wall Light on Left Wall */}
+        <group position={[-4.8, 2, 0]}>
+          {/* Wall sconce fixture - flat circular cover */}
+          <Cylinder args={[0.3, 0.3, 0.1, 32]} rotation={[0, 0, Math.PI / 2]} castShadow={false}>
+            <meshStandardMaterial color="white" emissive={lampColor} emissiveIntensity={brightness + lampIntensity * 0.5} />
+          </Cylinder>
+          {/* Wall light source */}
+          <pointLight
+            position={[0, 0, 0]}
+            intensity={60 * lampIntensity}
+            color={lampColor}
+            distance={0}
+            castShadow
+            shadow-mapSize={[256, 256]}
+            shadow-normalBias={0.04}
+            shadow-bias={-0.0001}
+          />
+        </group>
+
         {/* Room Structure */}
         <group position={[0, -1.5, 0]}>
           {/* Floor */}
