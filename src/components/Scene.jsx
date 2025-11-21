@@ -59,17 +59,18 @@ function HangingLamp({ position, brightness, color, isSwinging, offset = 0, inte
         intensity={lightIntensity}
         color={color}
         castShadow
+        shadow-normalBias={0.04}
         shadow-bias={-0.0001}
       />
     </group>
   );
 }
 
-export function Scene({ brightness, isSwinging, lampIntensity }) {
+export function Scene({ brightness, isSwinging, lampIntensity, lampHue }) {
   // Calculate light intensity based on brightness prop (0 to 1)
   const ambientIntensity = brightness * 4.5;
   const mainLightIntensity = brightness * 30;
-  const lampColor = '#ffaa77'; // Warm light
+  const lampColor = `hsl(${lampHue}, 100%, 70%)`; // Dynamic color based on hue
 
   return (
     <>
@@ -86,6 +87,8 @@ export function Scene({ brightness, isSwinging, lampIntensity }) {
         distance={5}
         decay={2}
         castShadow
+        shadow-normalBias={0.04}
+        shadow-bias={-0.0001}
       />
 
       <Selection>

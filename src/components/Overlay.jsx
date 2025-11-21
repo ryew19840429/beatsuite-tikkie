@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, lampIntensity, setLampIntensity }) {
+export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, lampIntensity, setLampIntensity, lampHue, setLampHue }) {
     return (
         <div style={{
             position: 'absolute',
@@ -80,6 +80,35 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
                             }}
                         />
                         <span style={{ fontSize: '1.2rem' }}>🔥</span>
+                    </div>
+                </div>
+
+                <div className="control-group" style={{ marginTop: '1rem' }}>
+                    <label style={{ color: 'white', marginBottom: '8px', display: 'block' }}>Lamp Color</label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <div style={{
+                            width: '24px',
+                            height: '24px',
+                            borderRadius: '50%',
+                            backgroundColor: `hsl(${lampHue}, 100%, 50%)`,
+                            border: '2px solid white'
+                        }} />
+                        <input
+                            type="range"
+                            min="0"
+                            max="360"
+                            value={lampHue}
+                            onChange={(e) => setLampHue(parseFloat(e.target.value))}
+                            style={{
+                                flex: 1,
+                                accentColor: 'white',
+                                cursor: 'pointer',
+                                background: 'linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet, red)',
+                                appearance: 'none',
+                                height: '6px',
+                                borderRadius: '3px'
+                            }}
+                        />
                     </div>
                 </div>
 
