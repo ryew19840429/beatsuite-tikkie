@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Box, Plane, Sphere, Cylinder, SoftShadows } from '@react-three/drei';
+import { Box, Plane, Sphere, Cylinder, SoftShadows, OrbitControls } from '@react-three/drei';
 import { Selection, Select, EffectComposer, Outline } from '@react-three/postprocessing';
 import { Draggable } from './Draggable';
 
@@ -88,6 +88,7 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
   return (
     <>
       <SoftShadows size={25} samples={6} focus={0} />
+      <OrbitControls enablePan={false} minDistance={5} maxDistance={15} />
 
       {/* Ambient Light for base visibility */}
       <ambientLight intensity={ambientIntensity} />
@@ -116,7 +117,7 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
         <HangingLamp position={[1.5, 0, -3]} brightness={brightness} color={lampColor} isSwinging={isSwinging} offset={2} intensity={lampIntensity} />
 
         {/* Wall Light on Left Wall */}
-        <group position={[-4.8, 2, 0]}>
+        <group position={[-4.95, 2, 0]}>
           {/* Wall sconce fixture - flat circular cover */}
           <Cylinder args={[0.3, 0.3, 0.1, 32]} rotation={[0, 0, Math.PI / 2]} castShadow={false}>
             <meshStandardMaterial color="white" emissive={lampColor} emissiveIntensity={brightness + lampIntensity * 0.5} />
