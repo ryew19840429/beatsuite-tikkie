@@ -4,15 +4,15 @@ import { Box, Plane, Sphere, Cylinder, SoftShadows } from '@react-three/drei';
 import { Selection, Select, EffectComposer, Outline } from '@react-three/postprocessing';
 import { Draggable } from './Draggable';
 
-function Furniture({ children, initialPosition }) {
+function Furniture({ children, initialPosition, name, setHoveredFurniture }) {
   const [hovered, setHovered] = useState(false);
 
   return (
     <Draggable initialPosition={initialPosition}>
       <Select enabled={hovered}>
         <group
-          onPointerOver={(e) => { e.stopPropagation(); setHovered(true); }}
-          onPointerOut={(e) => { e.stopPropagation(); setHovered(false); }}
+          onPointerOver={(e) => { e.stopPropagation(); setHovered(true); setHoveredFurniture(name); }}
+          onPointerOut={(e) => { e.stopPropagation(); setHovered(false); setHoveredFurniture(null); }}
         >
           {children}
         </group>
@@ -66,7 +66,7 @@ function HangingLamp({ position, brightness, color, isSwinging, offset = 0, inte
   );
 }
 
-export function Scene({ brightness, isSwinging, lampIntensity, lampHue }) {
+export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHoveredFurniture }) {
   // Calculate light intensity based on brightness prop (0 to 1)
   const ambientIntensity = brightness * 4.5;
   const mainLightIntensity = brightness * 30;
@@ -135,35 +135,35 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue }) {
         {/* Furniture Placeholders */}
         <group position={[0, -1.5, 0]}>
           {/* Sofa */}
-          <Furniture initialPosition={[2, 0.4, 0]}>
+          <Furniture initialPosition={[2, 0.4, 0]} name="Sofa" setHoveredFurniture={setHoveredFurniture}>
             <Box args={[3, 0.8, 1.2]} castShadow receiveShadow>
               <meshStandardMaterial color="#885555" roughness={0.2} />
             </Box>
           </Furniture>
 
           {/* Coffee Table */}
-          <Furniture initialPosition={[-0.5, 0.2, 1]}>
+          <Furniture initialPosition={[-0.5, 0.2, 1]} name="Coffee Table" setHoveredFurniture={setHoveredFurniture}>
             <Box args={[1.5, 0.4, 1]} castShadow receiveShadow>
               <meshStandardMaterial color="#222" roughness={0.2} />
             </Box>
           </Furniture>
 
           {/* Chair */}
-          <Furniture initialPosition={[-2.5, 0.4, 0]}>
+          <Furniture initialPosition={[-2.5, 0.4, 0]} name="Chair" setHoveredFurniture={setHoveredFurniture}>
             <Box args={[1, 0.8, 1]} rotation={[0, 0.5, 0]} castShadow receiveShadow>
               <meshStandardMaterial color="#555566" roughness={0.2} />
             </Box>
           </Furniture>
 
           {/* Ottoman */}
-          <Furniture initialPosition={[-2.2, 0.25, 1.5]}>
+          <Furniture initialPosition={[-2.2, 0.25, 1.5]} name="Ottoman" setHoveredFurniture={setHoveredFurniture}>
             <Box args={[0.8, 0.5, 0.8]} rotation={[0, 0.2, 0]} castShadow receiveShadow>
               <meshStandardMaterial color="#665555" roughness={0.2} />
             </Box>
           </Furniture>
 
           {/* TV Stand / Cabinet */}
-          <Furniture initialPosition={[0, 0.3, -4]}>
+          <Furniture initialPosition={[0, 0.3, -4]} name="TV Stand" setHoveredFurniture={setHoveredFurniture}>
             <Box args={[6, 0.6, 0.8]} castShadow receiveShadow>
               <meshStandardMaterial color="#111" roughness={0.2} />
             </Box>

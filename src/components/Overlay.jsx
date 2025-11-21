@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, lampIntensity, setLampIntensity, lampHue, setLampHue }) {
+export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, lampIntensity, setLampIntensity, lampHue, setLampHue, hoveredFurniture }) {
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+    useEffect(() => {
+        const handleMouseMove = (e) => {
+            setMousePos({ x: e.clientX, y: e.clientY });
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
     return (
         <div style={{
             position: 'absolute',
@@ -124,6 +134,32 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
                     </label>
                 </div>
             </motion.div>
+
+            {/* Tooltip */}
+            {hoveredFurniture && (
+                <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    style={{
+                        position: 'fixed',
+                        left: `${mousePos.x + 15}px`,
+                        top: `${mousePos.y + 15}px`,
+                        background: 'rgba(255, 255, 255, 0.95)',
+                        color: '#000',
+                        padding: '8px 16px',
+                        borderRadius: '6px',
+                        fontSize: '0.95rem',
+                        fontWeight: 500,
+                        pointerEvents: 'none',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                        zIndex: 100,
+                        whiteSpace: 'nowrap'
+                    }}
+                >
+                    {hoveredFurniture}
+                </motion.div>
+            )}
         </div>
     );
 }

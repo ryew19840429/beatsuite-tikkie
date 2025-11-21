@@ -8,6 +8,7 @@ function App() {
   const [isSwinging, setIsSwinging] = useState(false);
   const [lampIntensity, setLampIntensity] = useState(1);
   const [lampHue, setLampHue] = useState(30); // Default warm orange
+  const [hoveredFurniture, setHoveredFurniture] = useState(null);
 
   return (
     <>
@@ -17,7 +18,13 @@ function App() {
         style={{ background: '#050505' }}
       >
         <Suspense fallback={null}>
-          <Scene brightness={brightness} isSwinging={isSwinging} lampIntensity={lampIntensity} lampHue={lampHue} />
+          <Scene
+            brightness={brightness}
+            isSwinging={isSwinging}
+            lampIntensity={lampIntensity}
+            lampHue={lampHue}
+            setHoveredFurniture={setHoveredFurniture}
+          />
         </Suspense>
       </Canvas>
 
@@ -30,6 +37,7 @@ function App() {
         setLampIntensity={setLampIntensity}
         lampHue={lampHue}
         setLampHue={setLampHue}
+        hoveredFurniture={hoveredFurniture}
       />
     </>
   );
