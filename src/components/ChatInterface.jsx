@@ -12,8 +12,10 @@ export function ChatInterface({ setLampIntensity, setLampHue, setBrightness }) {
     const ai = useMemo(() => new GoogleGenAI({ apiKey: 'AIzaSyCAFbR9R2MEi7D2aw5CP4EtQgJamScEdkY' }), []);
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages.length]);
+        if (isOpen) {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [messages.length, isOpen]);
 
     const parseAIResponse = (text) => {
         const jsonMatch = text.match(/\{[\s\S]*\}/);
@@ -54,7 +56,7 @@ Respond with a JSON object containing the values to set, and a friendly message.
 Only include properties that should change. If the user just wants information, only include "message".`;
 
             const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash-001',
+                model: 'gemini-2.5-flash-lite',
                 contents: prompt,
             });
             // Extract text safely – the SDK may return .text or nested candidate parts
