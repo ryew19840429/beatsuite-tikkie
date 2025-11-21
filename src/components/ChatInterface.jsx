@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { motion } from 'framer-motion';
+import { GoogleGenAI } from '@google/genai';
 
 export function ChatInterface({ setLampIntensity, setLampHue, setBrightness }) {
     const [messages, setMessages] = useState([]);
@@ -9,7 +9,7 @@ export function ChatInterface({ setLampIntensity, setLampHue, setBrightness }) {
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef(null);
 
-    const genAI = useMemo(() => new GoogleGenerativeAI('AIzaSyCAFbR9R2MEi7D2aw5CP4EtQgJamScEdkY'), []);
+    const ai = useMemo(() => new GoogleGenAI({ apiKey: 'AIzaSyCAFbR9R2MEi7D2aw5CP4EtQgJamScEdkY' }), []);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -36,8 +36,6 @@ export function ChatInterface({ setLampIntensity, setLampHue, setBrightness }) {
         setIsLoading(true);
 
         try {
-            const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-
             const prompt = `You are a smart home assistant controlling lamp settings. The user can control:
 - lampIntensity: 0 to 3 (default 1)
 - lampHue: 0 to 360 (color in HSL, 0=red, 30=orange, 60=yellow, 120=green, 180=cyan, 240=blue, 300=magenta)
@@ -55,10 +53,13 @@ Respond with a JSON object containing the values to set, and a friendly message.
 
 Only include properties that should change. If the user just wants information, only include "message".`;
 
-            const result = await model.generateContent(prompt);
-            const response = result.response.text();
-
-            const parsed = parseAIResponse(response);
+            const response = await ai.models.generateContent({
+                model: 'gemini-2.5-flash-001',
+                contents: prompt,
+            });
+            // Extract text safely – the SDK may return .text or nested candidate parts
+            const responseText = response.text ?? response?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+            const parsed = parseAIResponse(responseText);
 
             if (parsed) {
                 if (parsed.lampIntensity !== undefined) setLampIntensity(parsed.lampIntensity);
@@ -72,7 +73,7 @@ Only include properties that should change. If the user just wants information, 
             } else {
                 setMessages(prev => [...prev, {
                     role: 'assistant',
-                    content: response
+                    content: responseText
                 }]);
             }
         } catch (error) {
@@ -93,7 +94,7 @@ Only include properties that should change. If the user just wants information, 
             left: '40px',
             zIndex: 100
         }}>
-            <AnimatePresence mode="wait">
+            <>
                 {!isOpen ? (
                     <motion.button
                         key="button"
@@ -263,7 +264,7 @@ Only include properties that should change. If the user just wants information, 
                         </div>
                     </motion.div>
                 )}
-            </AnimatePresence>
+            </>
         </div>
     );
 }
