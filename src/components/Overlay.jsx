@@ -36,7 +36,7 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flex-end',
-            alignItems: 'flex-end',
+            alignItems: 'flex-start',
             padding: '30px',
             boxSizing: 'border-box',
             zIndex: 10
@@ -46,31 +46,25 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
                 style={{
-                    width: '360px',
+                    width: '220px',
+                    marginBottom: '295px', // Space for CircadianClock + 30px gap
                     boxSizing: 'border-box',
                     pointerEvents: 'auto',
-                    background: 'rgba(255, 255, 255, 0.1)',
+                    background: 'rgba(20, 20, 20, 0.9)', // Match clock background
                     backdropFilter: 'blur(10px)',
-                    padding: '24px',
+                    padding: '20px', // Reduced padding
                     borderRadius: '16px',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
                 }}
             >
-                <h1 style={{
-                    margin: '0 0 16px 0',
-                    fontSize: '1.2rem',
-                    fontWeight: 500,
-                    color: 'white'
-                }}>
-                    Room Ambiance
-                </h1>
 
 
 
-                <div className="control-group" style={{ marginTop: '1rem' }}>
-                    <label style={{ color: 'white', marginBottom: '8px', display: 'block' }}>Lamp Intensity</label>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                        <span style={{ fontSize: '1.2rem' }}>💡</span>
+
+                <div className="control-group" style={{ marginTop: '0.5rem' }}>
+                    <label style={{ color: '#888', marginBottom: '4px', display: 'block', fontSize: '0.7rem' }}>INTENSITY</label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ fontSize: '1rem' }}>💡</span>
                         <input
                             type="range"
                             min="0"
@@ -81,22 +75,24 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
                             style={{
                                 flex: 1,
                                 accentColor: 'white',
-                                cursor: 'pointer'
+                                cursor: 'pointer',
+                                width: '100%'
                             }}
                         />
-                        <span style={{ fontSize: '1.2rem' }}>🔥</span>
+                        <span style={{ fontSize: '1rem' }}>🔥</span>
                     </div>
                 </div>
 
                 <div className="control-group" style={{ marginTop: '1rem' }}>
-                    <label style={{ color: 'white', marginBottom: '8px', display: 'block' }}>Lamp Color</label>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <label style={{ color: '#888', marginBottom: '4px', display: 'block', fontSize: '0.7rem' }}>COLOR</label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <div style={{
-                            width: '24px',
-                            height: '24px',
+                            width: '18px',
+                            height: '18px',
                             borderRadius: '50%',
                             backgroundColor: `hsl(${lampHue}, 100%, 50%)`,
-                            border: '2px solid white'
+                            border: '2px solid white',
+                            flexShrink: 0
                         }} />
                         <input
                             type="range"
@@ -110,8 +106,9 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
                                 cursor: 'pointer',
                                 background: 'linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet, red)',
                                 appearance: 'none',
-                                height: '6px',
-                                borderRadius: '3px'
+                                height: '4px',
+                                borderRadius: '2px',
+                                width: '100%'
                             }}
                         />
                     </div>

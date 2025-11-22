@@ -136,7 +136,7 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
   });
 
   // Calculate light intensity based on brightness prop (0 to 1)
-  const ambientIntensity = 0.7; // Fixed ambient
+  const ambientIntensity = 0; // Fixed ambient
   const mainLightIntensity = 1.5; // Fixed main light base
   // const lampColor = `hsl(${lampHue}, 100%, 70%)`; // Removed in favor of interpolation
 

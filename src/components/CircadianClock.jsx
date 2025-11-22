@@ -62,6 +62,7 @@ const CircadianClock = ({ setLampIntensity, setLampHue, isRunning, setIsRunning 
       bottom: '30px',
       left: '30px',
       width: '220px',
+      boxSizing: 'border-box',
       background: 'rgba(20, 20, 20, 0.9)',
       color: 'white',
       padding: '20px',
@@ -166,7 +167,7 @@ const CircadianClock = ({ setLampIntensity, setLampHue, isRunning, setIsRunning 
           onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'}
           onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
         >
-          {isRunning ? '⏸' : '▶'}
+          <span style={{ paddingLeft: isRunning ? '0' : '4px' }}>{isRunning ? '⏸' : '▶'}</span>
         </button>
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
