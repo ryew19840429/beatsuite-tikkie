@@ -13,6 +13,7 @@ function App() {
   const [hoveredFurniture, setHoveredFurniture] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isClockRunning, setIsClockRunning] = useState(true);
+  const [time, setTime] = useState(7 * 60); // Start at 7:00 AM
 
   return (
     <>
@@ -26,6 +27,8 @@ function App() {
         setLampHue={setLampHue}
         isRunning={isClockRunning}
         setIsRunning={setIsClockRunning}
+        time={time}
+        setTime={setTime}
       />
       <Canvas
         shadows
@@ -39,6 +42,7 @@ function App() {
             setHoveredFurniture={setHoveredFurniture}
             isDragging={isDragging}
             setIsDragging={setIsDragging}
+            time={time}
           />
         </Suspense>
       </Canvas>

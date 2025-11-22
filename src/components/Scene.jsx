@@ -1,7 +1,7 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Color, MathUtils } from 'three';
-import { Box, Plane, Sphere, Cylinder, SoftShadows, OrbitControls } from '@react-three/drei';
+import { Box, Plane, Sphere, Cylinder, SoftShadows, OrbitControls, useTexture } from '@react-three/drei';
 import { Selection, Select, EffectComposer, Outline } from '@react-three/postprocessing';
 import { Draggable } from './Draggable';
 
@@ -46,9 +46,8 @@ const HangingLamp = React.memo(function HangingLamp({ position, targetHue, offse
 
     // Apply to Light
     if (lightRef.current) {
-      lightRef.current.intensity = 40 * currentIntensity.current;
-      const color = new Color().setHSL(currentHue.current / 360, 1, 0.7);
-      lightRef.current.color.copy(color);
+      lightRef.current.color.setHSL(currentHue.current / 360, 1, 0.5);
+      lightRef.current.intensity = currentIntensity.current * 20; // Reduced multiplier (was 40)
     }
 
     // Apply to Bulb Material
@@ -82,7 +81,78 @@ const HangingLamp = React.memo(function HangingLamp({ position, targetHue, offse
   );
 });
 
-export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging, setIsDragging }) {
+const WindowView = React.memo(function WindowView({ time }) {
+  const texture = useTexture('/garden_view.png');
+  const meshRef = useRef();
+  const lightRef = useRef();
+  const pointLightRef = useRef();
+
+  useFrame(() => {
+    if (meshRef.current) {
+      // Calculate sky/ambient color based on TIME, not lamp settings
+      const hour = time / 60;
+
+      let targetColor = new Color();
+      let brightness = 1;
+
+      if (hour >= 20 || hour < 7) {
+        // Night (8 PM - 7 AM)
+        targetColor.setHSL(0.6, 0.6, 0.4); // Moonlight Blue
+        brightness = 0.8;
+      } else if (hour >= 7 && hour < 17) {
+        // Day (7 AM - 5 PM)
+        targetColor.setHSL(0.6, 0.2, 0.9); // Bright White/Blue Sky
+        brightness = 2.0;
+      } else {
+        // Evening (5 PM - 8 PM)
+        targetColor.setHSL(0.08, 0.8, 0.6); // Sunset Orange
+        brightness = 1.5;
+      }
+
+      // Texture brightness (keep it a bit lower than light source for realism)
+      const textureColor = targetColor.clone().multiplyScalar(0.8);
+      meshRef.current.color.lerp(textureColor, 0.05);
+      meshRef.current.toneMapped = false;
+
+      // Update RectAreaLight
+      if (lightRef.current) {
+        lightRef.current.color.lerp(targetColor, 0.05);
+        lightRef.current.intensity = MathUtils.lerp(lightRef.current.intensity, brightness * 5, 0.05); // Reduced multiplier (was 10)
+      }
+
+      // Update PointLight (Fill light for the room)
+      if (pointLightRef.current) {
+        pointLightRef.current.color.lerp(targetColor, 0.05);
+        pointLightRef.current.intensity = MathUtils.lerp(pointLightRef.current.intensity, brightness * 2, 0.05); // Reduced multiplier (was 5)
+      }
+    }
+  });
+
+  return (
+    <group position={[0, 3, -5.1]}>
+      <Plane args={[6, 3]}>
+        <meshBasicMaterial ref={meshRef} map={texture} />
+      </Plane>
+      {/* Window Light Source (RectArea for reflections) */}
+      <rectAreaLight
+        ref={lightRef}
+        width={6}
+        height={3}
+        position={[0, 0, 0.1]}
+        rotation={[0, Math.PI, 0]}
+      />
+      {/* PointLight for general room illumination from window */}
+      <pointLight
+        ref={pointLightRef}
+        position={[0, 0, 1]}
+        distance={15}
+        decay={2}
+      />
+    </group>
+  );
+});
+
+export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging, setIsDragging, time }) {
   // Static lights refs
   const tableLightRef = useRef();
   const wallLightRef = useRef();
@@ -109,7 +179,7 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
       // For simplicity and requested effect, let's sync it to the main vibe but maybe slightly warmer.
       // Actually user said "light settings", implying all lights.
       tableLightRef.current.color.copy(color);
-      tableLightRef.current.intensity = intensity * 20; // Scaled intensity
+      tableLightRef.current.intensity = intensity * 10; // Reduced multiplier (was 20)
       // Wait, original table lamp was: intensity={mainLightIntensity * 0.8} where mainLightIntensity = brightness * 30
       // It didn't use lampIntensity.
       // BUT the user wants "light transition" for the circadian clock.
@@ -127,7 +197,7 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
     // Update Wall Light
     if (wallLightRef.current) {
       wallLightRef.current.color.copy(color);
-      wallLightRef.current.intensity = 40 * intensity;
+      wallLightRef.current.intensity = intensity * 20; // Reduced multiplier (was 40)
     }
     if (wallSconceRef.current) {
       wallSconceRef.current.material.emissive.copy(color);
@@ -137,7 +207,7 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
 
   // Calculate light intensity based on brightness prop (0 to 1)
   const ambientIntensity = 0; // Fixed ambient
-  const mainLightIntensity = 1.5; // Fixed main light base
+  const mainLightIntensity = 0.75; // Reduced main light base (was 1.5)
   // const lampColor = `hsl(${lampHue}, 100%, 70%)`; // Removed in favor of interpolation
 
   // Memoize materials to avoid recreation on every render
@@ -217,14 +287,46 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
             <meshStandardMaterial {...floorMaterial} />
           </Plane>
 
-          {/* Back Wall */}
-          <Plane
-            args={[10, 6]}
-            position={[0, 3, -5]}
-            receiveShadow
-          >
+          {/* Back Wall (Split for Window) */}
+          {/* Top */}
+          <Plane args={[10, 1.5]} position={[0, 5.25, -5]} receiveShadow>
             <meshStandardMaterial {...backWallMaterial} />
           </Plane>
+          {/* Bottom */}
+          <Plane args={[10, 1.5]} position={[0, 0.75, -5]} receiveShadow>
+            <meshStandardMaterial {...backWallMaterial} />
+          </Plane>
+          {/* Left */}
+          <Plane args={[2, 3]} position={[-4, 3, -5]} receiveShadow>
+            <meshStandardMaterial {...backWallMaterial} />
+          </Plane>
+          {/* Right */}
+          <Plane args={[2, 3]} position={[4, 3, -5]} receiveShadow>
+            <meshStandardMaterial {...backWallMaterial} />
+          </Plane>
+
+          {/* Window View */}
+          <WindowView time={time} />
+
+          {/* Window Frame */}
+          <group position={[0, 3, -5]}>
+            {/* Top Frame */}
+            <Box args={[6.2, 0.1, 0.2]} position={[0, 1.55, 0]} castShadow>
+              <meshStandardMaterial color="#333" />
+            </Box>
+            {/* Bottom Frame */}
+            <Box args={[6.2, 0.1, 0.2]} position={[0, -1.55, 0]} castShadow>
+              <meshStandardMaterial color="#333" />
+            </Box>
+            {/* Left Frame */}
+            <Box args={[0.1, 3.2, 0.2]} position={[-3.05, 0, 0]} castShadow>
+              <meshStandardMaterial color="#333" />
+            </Box>
+            {/* Right Frame */}
+            <Box args={[0.1, 3.2, 0.2]} position={[3.05, 0, 0]} castShadow>
+              <meshStandardMaterial color="#333" />
+            </Box>
+          </group>
 
           {/* Left Wall (Window side) */}
           <Plane
