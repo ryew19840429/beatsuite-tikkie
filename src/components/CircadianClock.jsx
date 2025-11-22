@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 const CircadianClock = ({ setLampIntensity, setLampHue }) => {
   const [time, setTime] = useState(7 * 60); // Start at 7:00 AM
-  const [isRunning, setIsRunning] = useState(false);
-  const [speed, setSpeed] = useState(10); // Multiplier for speed
+  const [isRunning, setIsRunning] = useState(true);
+  const [speed, setSpeed] = useState(100); // Multiplier for speed
 
   useEffect(() => {
     let intervalId;
@@ -11,13 +11,16 @@ const CircadianClock = ({ setLampIntensity, setLampHue }) => {
       intervalId = setInterval(() => {
         setTime(prevTime => {
           const newTime = (prevTime + 1) % 1440; // 1440 minutes in a day
-          updateLights(newTime);
           return newTime;
         });
       }, 1000 / speed); // Update rate based on speed
     }
     return () => clearInterval(intervalId);
   }, [isRunning, speed]);
+
+  useEffect(() => {
+    updateLights(time);
+  }, [time]);
 
   const updateLights = (currentTime) => {
     const hour = currentTime / 60;

@@ -50,13 +50,20 @@ const SYMPTOMS = {
         prompt: "Generate a confident, rhythmic track in Major key with a strong pulse to provide predictability. Use a steady marching beat with clear structure (verse/chorus). Instruments: Snare drum, brass, and piano to empower the child and provide a sense of control.",
         lampIntensity: 1.0,
         lampHue: 40
+    },
+    normal: {
+        label: "Normal / Relaxed",
+        bpm: 90,
+        prompt: "Generate balanced, pleasant background music in a Major key. Moderate tempo (90 BPM) with a steady rhythm. Use a mix of acoustic and electronic instruments for a modern, neutral feel suitable for everyday activity.",
+        lampIntensity: 2.0,
+        lampHue: 50
     }
 };
 
 const MusicGenerator = ({ setLampIntensity, setLampHue }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [status, setStatus] = useState('Ready');
-    const [activeSymptom, setActiveSymptom] = useState('anxiety'); // Default
+    const [activeSymptom, setActiveSymptom] = useState('normal'); // Default
 
     const audioContextRef = useRef(null);
     const sessionRef = useRef(null);
