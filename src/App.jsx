@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { Scene } from './components/Scene';
 import { Overlay } from './components/Overlay';
 import { ChatInterface } from './components/ChatInterface';
+import MusicGenerator from './components/MusicGenerator';
 
 function App() {
   const [brightness, setBrightness] = useState(0);
@@ -14,6 +15,7 @@ function App() {
 
   return (
     <>
+      <MusicGenerator />
       <Canvas
         shadows
         camera={{ position: [0, 2, 8], fov: 50 }}
