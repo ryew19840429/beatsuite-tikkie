@@ -22,7 +22,7 @@ const Furniture = React.memo(function Furniture({ children, initialPosition, nam
   );
 });
 
-const HangingLamp = React.memo(function HangingLamp({ position, brightness, targetHue, isSwinging, offset = 0, targetIntensity = 1 }) {
+const HangingLamp = React.memo(function HangingLamp({ position, targetHue, offset = 0, targetIntensity = 1 }) {
   const groupRef = useRef();
   const lightRef = useRef();
   const bulbRef = useRef();
@@ -32,13 +32,8 @@ const HangingLamp = React.memo(function HangingLamp({ position, brightness, targ
   const currentIntensity = useRef(targetIntensity);
 
   useFrame((state, delta) => {
-    // 1. Pendulum animation
-    if (isSwinging && groupRef.current) {
-      const time = state.clock.elapsedTime;
-      const speed = 2;
-      const amplitude = 0.2;
-      groupRef.current.rotation.z = Math.sin(time * speed + offset) * amplitude;
-    } else if (groupRef.current) {
+    // 1. Pendulum animation removed
+    if (groupRef.current) {
       groupRef.current.rotation.z = MathUtils.lerp(groupRef.current.rotation.z, 0, delta * 5);
     }
 
@@ -47,10 +42,11 @@ const HangingLamp = React.memo(function HangingLamp({ position, brightness, targ
     const lerpSpeed = delta * 1.5;
     currentHue.current = MathUtils.lerp(currentHue.current, targetHue, lerpSpeed);
     currentIntensity.current = MathUtils.lerp(currentIntensity.current, targetIntensity, lerpSpeed);
+    // console.log("HangingLamp Intensity:", currentIntensity.current, "Target:", targetIntensity);
 
     // Apply to Light
     if (lightRef.current) {
-      lightRef.current.intensity = 60 * currentIntensity.current;
+      lightRef.current.intensity = 40 * currentIntensity.current;
       const color = new Color().setHSL(currentHue.current / 360, 1, 0.7);
       lightRef.current.color.copy(color);
     }
@@ -59,7 +55,7 @@ const HangingLamp = React.memo(function HangingLamp({ position, brightness, targ
     if (bulbRef.current) {
       const color = new Color().setHSL(currentHue.current / 360, 1, 0.7);
       bulbRef.current.material.emissive.copy(color);
-      bulbRef.current.material.emissiveIntensity = brightness + currentIntensity.current * 0.5;
+      bulbRef.current.material.emissiveIntensity = currentIntensity.current * 0.5;
     }
   });
 
@@ -86,7 +82,7 @@ const HangingLamp = React.memo(function HangingLamp({ position, brightness, targ
   );
 });
 
-export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHoveredFurniture, isDragging, setIsDragging }) {
+export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging, setIsDragging }) {
   // Static lights refs
   const tableLightRef = useRef();
   const wallLightRef = useRef();
@@ -103,6 +99,7 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
 
     const color = new Color().setHSL(currentHue.current / 360, 1, 0.7);
     const intensity = currentIntensity.current;
+    // console.log("Scene Intensity:", intensity, "Target:", lampIntensity);
 
     // Update Table Lamp
     if (tableLightRef.current) {
@@ -112,7 +109,7 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
       // For simplicity and requested effect, let's sync it to the main vibe but maybe slightly warmer.
       // Actually user said "light settings", implying all lights.
       tableLightRef.current.color.copy(color);
-      tableLightRef.current.intensity = brightness * 30 * 0.8; // Keep original brightness scaling logic?
+      tableLightRef.current.intensity = intensity * 20; // Scaled intensity
       // Wait, original table lamp was: intensity={mainLightIntensity * 0.8} where mainLightIntensity = brightness * 30
       // It didn't use lampIntensity.
       // BUT the user wants "light transition" for the circadian clock.
@@ -130,17 +127,17 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
     // Update Wall Light
     if (wallLightRef.current) {
       wallLightRef.current.color.copy(color);
-      wallLightRef.current.intensity = 60 * intensity;
+      wallLightRef.current.intensity = 40 * intensity;
     }
     if (wallSconceRef.current) {
       wallSconceRef.current.material.emissive.copy(color);
-      wallSconceRef.current.material.emissiveIntensity = brightness + intensity * 0.5;
+      wallSconceRef.current.material.emissiveIntensity = intensity * 0.5;
     }
   });
 
   // Calculate light intensity based on brightness prop (0 to 1)
-  const ambientIntensity = brightness * 4.5;
-  const mainLightIntensity = brightness * 30;
+  const ambientIntensity = 0.7; // Fixed ambient
+  const mainLightIntensity = 1.5; // Fixed main light base
   // const lampColor = `hsl(${lampHue}, 100%, 70%)`; // Removed in favor of interpolation
 
   // Memoize materials to avoid recreation on every render
@@ -167,7 +164,7 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
       <pointLight
         ref={tableLightRef}
         position={[-2, 1, -1]}
-        intensity={mainLightIntensity * 0.8}
+        intensity={40 * 0.8} // Fixed intensity
         color="#ffccaa"
         distance={5}
         decay={2}
@@ -183,13 +180,12 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
         </EffectComposer>
 
         {/* Hanging Lamps */}
-        <HangingLamp position={[-1.5, 0, -3]} brightness={brightness} targetHue={lampHue} isSwinging={isSwinging} offset={0} targetIntensity={lampIntensity} />
-        <HangingLamp position={[0, 0, -3]} brightness={brightness} targetHue={lampHue} isSwinging={isSwinging} offset={1} targetIntensity={lampIntensity} />
-        <HangingLamp position={[1.5, 0, -3]} brightness={brightness} targetHue={lampHue} isSwinging={isSwinging} offset={2} targetIntensity={lampIntensity} />
+        <HangingLamp position={[-1.5, 0, -3]} targetHue={lampHue} offset={0} targetIntensity={lampIntensity} />
+        <HangingLamp position={[0, 0, -3]} targetHue={lampHue} offset={1} targetIntensity={lampIntensity} />
+        <HangingLamp position={[1.5, 0, -3]} targetHue={lampHue} offset={2} targetIntensity={lampIntensity} />
 
         {/* Wall Light on Left Wall */}
         <group position={[-4.95, 2, 0]}>
-          {/* Wall sconce fixture - flat circular cover */}
           <Cylinder ref={wallSconceRef} args={[0.3, 0.3, 0.1, 16]} rotation={[0, 0, Math.PI / 2]} castShadow={false}>
             <meshStandardMaterial color="white" />
           </Cylinder>

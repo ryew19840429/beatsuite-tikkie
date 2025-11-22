@@ -8,8 +8,6 @@ import MusicGenerator from './components/MusicGenerator';
 import CircadianClock from './components/CircadianClock';
 
 function App() {
-  const [brightness, setBrightness] = useState(0);
-  const [isSwinging, setIsSwinging] = useState(false);
   const [lampIntensity, setLampIntensity] = useState(1);
   const [lampHue, setLampHue] = useState(30); // Default warm orange
   const [hoveredFurniture, setHoveredFurniture] = useState(null);
@@ -36,8 +34,6 @@ function App() {
       >
         <Suspense fallback={null}>
           <Scene
-            brightness={brightness}
-            isSwinging={isSwinging}
             lampIntensity={lampIntensity}
             lampHue={lampHue}
             setHoveredFurniture={setHoveredFurniture}
@@ -48,10 +44,6 @@ function App() {
       </Canvas>
 
       <Overlay
-        brightness={brightness}
-        setBrightness={setBrightness}
-        isSwinging={isSwinging}
-        setIsSwinging={setIsSwinging}
         lampIntensity={lampIntensity}
         setLampIntensity={setLampIntensity}
         lampHue={lampHue}
@@ -62,7 +54,6 @@ function App() {
       <ChatInterface
         setLampIntensity={setLampIntensity}
         setLampHue={setLampHue}
-        setBrightness={setBrightness}
       />
     </>
   );
