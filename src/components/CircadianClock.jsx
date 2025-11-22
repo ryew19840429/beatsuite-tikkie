@@ -56,9 +56,9 @@ const CircadianClock = ({ setLampIntensity, setLampHue }) => {
   return (
     <div style={{
       position: 'absolute',
-      bottom: '20px',
-      left: '50%',
-      transform: 'translateX(-50%)',
+      bottom: '40px',
+      left: '40px',
+      width: '220px',
       background: 'rgba(20, 20, 20, 0.9)',
       color: 'white',
       padding: '20px',
