@@ -15,7 +15,10 @@ function App() {
 
   return (
     <>
-      <MusicGenerator />
+      <MusicGenerator
+        setLampIntensity={setLampIntensity}
+        setLampHue={setLampHue}
+      />
       <Canvas
         shadows
         camera={{ position: [0, 2, 8], fov: 50 }}

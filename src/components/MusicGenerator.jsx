@@ -5,41 +5,55 @@ const SYMPTOMS = {
     anxiety: {
         label: "Anxiety & Fear",
         bpm: 70,
-        prompt: "Generate a gentle lullaby in a Major (Ionian) or Pentatonic scale to create a sense of safety. Set tempo to 60–80 BPM with a steady, rocking rhythm and low, controlled volume. Feature warm, acoustic instruments like harp, celesta, or soft piano. Avoid dissonance or sudden loud noises; create a 'musical blanket' of security."
+        prompt: "Generate a gentle lullaby in a Major (Ionian) or Pentatonic scale to create a sense of safety. Set tempo to 60–80 BPM with a steady, rocking rhythm and low, controlled volume. Feature warm, acoustic instruments like harp, celesta, or soft piano. Avoid dissonance or sudden loud noises; create a 'musical blanket' of security.",
+        lampIntensity: 0.5,
+        lampHue: 35
     },
     painRelief: {
         label: "Pain Relief",
         bpm: 60,
-        prompt: "Create soothing instrumental music in Mixolydian or Major mode to induce a dreamy, floating quality. Use a slow tempo (60 BPM) with constant, low dynamics and no percussion. Incorporate long, sustained notes (pad textures) to mimic deep sleep or ocean waves, helping the child drift away from pain."
+        prompt: "Create soothing instrumental music in Mixolydian or Major mode to induce a dreamy, floating quality. Use a slow tempo (60 BPM) with constant, low dynamics and no percussion. Incorporate long, sustained notes (pad textures) to mimic deep sleep or ocean waves, helping the child drift away from pain.",
+        lampIntensity: 0.0,
+        lampHue: 0
     },
     painTolerance: {
         label: "Pain Tolerance",
         bpm: 110,
-        prompt: "Generate an engaging musical story that modulates between keys to keep the child cognitively distracted. Shift styles from a slow intro to an upbeat march and back. Use varied rhythms and playful instruments like xylophone, flute, or pizzicato strings to occupy attention during the procedure."
+        prompt: "Generate an engaging musical story that modulates between keys to keep the child cognitively distracted. Shift styles from a slow intro to an upbeat march and back. Use varied rhythms and playful instruments like xylophone, flute, or pizzicato strings to occupy attention during the procedure.",
+        lampIntensity: 1.0,
+        lampHue: 45
     },
     depression: {
         label: "Depression / Withdrawal",
         bpm: 105,
-        prompt: "Generate bright, energetic pop music in a Major (Ionian) key to evoke feelings of happiness and triumph. Use a moderate tempo (100-110 BPM) with a bouncy, syncopated rhythm. Incorporate heroic orchestration (brass, drums) or a 'Disney-style' feel to stimulate emotional expression and joy."
+        prompt: "Generate bright, energetic pop music in a Major (Ionian) key to evoke feelings of happiness and triumph. Use a moderate tempo (100-110 BPM) with a bouncy, syncopated rhythm. Incorporate heroic orchestration (brass, drums) or a 'Disney-style' feel to stimulate emotional expression and joy.",
+        lampIntensity: 3.0,
+        lampHue: 210
     },
     stress: {
         label: "Physiological Stress",
         bpm: 65,
-        prompt: "Create simple, meditative music at 60–70 BPM using a Pentatonic scale to ensure zero tension or dissonance. Combine nature sounds (gentle rain or stream) with a simple, repetitive melody on a wooden flute or soft synth to help entrain the child's breathing and lower heart rate."
+        prompt: "Create simple, meditative music at 60–70 BPM using a Pentatonic scale to ensure zero tension or dissonance. Combine nature sounds (gentle rain or stream) with a simple, repetitive melody on a wooden flute or soft synth to help entrain the child's breathing and lower heart rate.",
+        lampIntensity: 1.5,
+        lampHue: 55
     },
     fatigue: {
         label: "Fatigue",
         bpm: 120,
-        prompt: "Generate motivating dance music in Major (Ionian) or Dorian mode for a fun, groovy feel. Set tempo to 120 BPM with a strong, driving beat and bright dynamics. Use percussive textures (shakers, claps) and a 'call and response' structure to encourage physical movement and active play."
+        prompt: "Generate motivating dance music in Major (Ionian) or Dorian mode for a fun, groovy feel. Set tempo to 120 BPM with a strong, driving beat and bright dynamics. Use percussive textures (shakers, claps) and a 'call and response' structure to encourage physical movement and active play.",
+        lampIntensity: 3.0,
+        lampHue: 220
     },
     distress: {
         label: "Procedure Distress",
         bpm: 110,
-        prompt: "Generate a confident, rhythmic track in Major key with a strong pulse to provide predictability. Use a steady marching beat with clear structure (verse/chorus). Instruments: Snare drum, brass, and piano to empower the child and provide a sense of control."
+        prompt: "Generate a confident, rhythmic track in Major key with a strong pulse to provide predictability. Use a steady marching beat with clear structure (verse/chorus). Instruments: Snare drum, brass, and piano to empower the child and provide a sense of control.",
+        lampIntensity: 1.0,
+        lampHue: 40
     }
 };
 
-const MusicGenerator = () => {
+const MusicGenerator = ({ setLampIntensity, setLampHue }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [status, setStatus] = useState('Ready');
     const [activeSymptom, setActiveSymptom] = useState('anxiety'); // Default
@@ -116,6 +130,12 @@ const MusicGenerator = () => {
 
     const handleSymptomClick = (key) => {
         setActiveSymptom(key);
+
+        // Set Lighting
+        const symptom = SYMPTOMS[key];
+        if (setLampIntensity) setLampIntensity(symptom.lampIntensity);
+        if (setLampHue) setLampHue(symptom.lampHue);
+
         if (isPlaying) {
             console.log("Restarting session for new symptom...");
             stopMusic();
