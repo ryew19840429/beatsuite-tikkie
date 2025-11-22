@@ -244,8 +244,8 @@ const MusicGenerator = ({ setLampIntensity, setLampHue }) => {
             borderRadius: '12px',
             width: '320px',
             position: 'absolute',
-            top: '20px',
-            right: '20px',
+            top: '30px',
+            right: '30px',
             zIndex: 1000,
             backdropFilter: 'blur(10px)',
             border: '1px solid rgba(255,255,255,0.1)'

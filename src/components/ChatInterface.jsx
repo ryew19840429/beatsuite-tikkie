@@ -92,8 +92,8 @@ Only include properties that should change. If the user just wants information, 
     return (
         <div style={{
             position: 'fixed',
-            top: '20px',
-            left: '20px',
+            top: '30px',
+            left: '30px',
             zIndex: 100
         }}>
             <>

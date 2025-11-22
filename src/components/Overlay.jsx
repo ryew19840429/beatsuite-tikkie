@@ -37,7 +37,7 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
             flexDirection: 'column',
             justifyContent: 'flex-end',
             alignItems: 'flex-end',
-            padding: '40px',
+            padding: '30px',
             boxSizing: 'border-box',
             zIndex: 10
         }}>
