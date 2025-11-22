@@ -152,6 +152,15 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
   const ottomanMaterial = useMemo(() => ({ color: "#665555", roughness: 0.2 }), []);
   const tvStandMaterial = useMemo(() => ({ color: "#111", roughness: 0.2 }), []);
 
+  // Bed Materials
+  const bedOrangeMaterial = useMemo(() => ({ color: "#ff9f43", roughness: 0.5 }), []);
+  const bedBlueMaterial = useMemo(() => ({ color: "#2e86de", roughness: 0.6 }), []);
+  const bedLightBlueMaterial = useMemo(() => ({ color: "#54a0ff", roughness: 0.6 }), []);
+  const bedMetalMaterial = useMemo(() => ({ color: "#bdc3c7", roughness: 0.3, metalness: 0.8 }), []);
+  const bedWheelMaterial = useMemo(() => ({ color: "#2c3e50", roughness: 0.8 }), []);
+  const bedPillowMaterial = useMemo(() => ({ color: "#ffffff", roughness: 0.9 }), []);
+  const ivBagMaterial = useMemo(() => ({ color: "#9b59b6", roughness: 0.3, transparent: true, opacity: 0.8 }), []);
+
   return (
     <>
       {/* <SoftShadows size={25} samples={4} focus={0} /> */}
@@ -250,11 +259,86 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
 
         {/* Furniture Placeholders */}
         <group position={[0, -1.5, 0]}>
-          {/* Sofa */}
-          <Furniture initialPosition={[2, 0.4, 3]} name="Sofa" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
-            <Box args={[3, 0.8, 1.2]} castShadow receiveShadow>
-              <meshStandardMaterial {...sofaMaterial} />
-            </Box>
+          {/* Medical Bed (Detailed) */}
+          <Furniture initialPosition={[3.2, 0, 1]} name="Bed" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
+            <group rotation={[0, Math.PI, 0]}>
+              {/* Legs & Wheels */}
+              {[[-1, 1], [-1, -1], [1, 1], [1, -1]].map(([x, z], i) => (
+                <group key={i} position={[x, 0.2, z * 0.5]}>
+                  <Cylinder args={[0.05, 0.05, 0.4, 8]} position={[0, 0, 0]} castShadow receiveShadow>
+                    <meshStandardMaterial {...bedMetalMaterial} />
+                  </Cylinder>
+                  <Cylinder args={[0.08, 0.08, 0.1, 16]} rotation={[Math.PI / 2, 0, 0]} position={[0, -0.2, 0]} castShadow receiveShadow>
+                    <meshStandardMaterial {...bedWheelMaterial} />
+                  </Cylinder>
+                </group>
+              ))}
+
+              {/* Main Frame */}
+              <Box args={[2.2, 0.1, 1.2]} position={[0, 0.45, 0]} castShadow receiveShadow>
+                <meshStandardMaterial {...bedMetalMaterial} />
+              </Box>
+
+              {/* Mattress */}
+              <Box args={[2.1, 0.2, 1.1]} position={[0, 0.6, 0]} castShadow receiveShadow>
+                <meshStandardMaterial {...bedBlueMaterial} />
+              </Box>
+
+              {/* Folded Sheet */}
+              <Box args={[0.8, 0.22, 1.12]} position={[0.2, 0.6, 0]} castShadow receiveShadow>
+                <meshStandardMaterial {...bedLightBlueMaterial} />
+              </Box>
+
+              {/* Pillow */}
+              <Box args={[0.4, 0.15, 0.8]} position={[-0.8, 0.75, 0]} rotation={[0, 0, 0.1]} castShadow receiveShadow>
+                <meshStandardMaterial {...bedPillowMaterial} />
+              </Box>
+
+              {/* Headboard */}
+              <group position={[-1.1, 0.8, 0]}>
+                <Box args={[0.1, 0.8, 1.2]} castShadow receiveShadow>
+                  <meshStandardMaterial {...bedOrangeMaterial} />
+                </Box>
+                {/* Blue Panels */}
+                <Box args={[0.12, 0.3, 0.3]} position={[0, 0.1, 0]} castShadow receiveShadow>
+                  <meshStandardMaterial {...bedLightBlueMaterial} />
+                </Box>
+                <Box args={[0.12, 0.3, 0.3]} position={[0, 0.1, 0.35]} castShadow receiveShadow>
+                  <meshStandardMaterial {...bedLightBlueMaterial} />
+                </Box>
+                <Box args={[0.12, 0.3, 0.3]} position={[0, 0.1, -0.35]} castShadow receiveShadow>
+                  <meshStandardMaterial {...bedLightBlueMaterial} />
+                </Box>
+              </group>
+
+              {/* Footboard */}
+              <group position={[1.1, 0.6, 0]}>
+                <Box args={[0.1, 0.6, 1.2]} castShadow receiveShadow>
+                  <meshStandardMaterial {...bedOrangeMaterial} />
+                </Box>
+                {/* Blue Panels */}
+                <Box args={[0.12, 0.2, 0.3]} position={[0, 0.1, 0]} castShadow receiveShadow>
+                  <meshStandardMaterial {...bedLightBlueMaterial} />
+                </Box>
+                <Box args={[0.12, 0.2, 0.3]} position={[0, 0.1, 0.35]} castShadow receiveShadow>
+                  <meshStandardMaterial {...bedLightBlueMaterial} />
+                </Box>
+                <Box args={[0.12, 0.2, 0.3]} position={[0, 0.1, -0.35]} castShadow receiveShadow>
+                  <meshStandardMaterial {...bedLightBlueMaterial} />
+                </Box>
+              </group>
+
+              {/* IV Stand */}
+              <group position={[-1.1, 0, -0.7]}>
+                <Cylinder args={[0.02, 0.02, 1.8, 8]} position={[0, 0.9, 0]} castShadow receiveShadow>
+                  <meshStandardMaterial {...bedMetalMaterial} />
+                </Cylinder>
+                {/* IV Bag */}
+                <Box args={[0.15, 0.2, 0.05]} position={[0, 1.7, 0.1]} castShadow receiveShadow>
+                  <meshStandardMaterial {...ivBagMaterial} />
+                </Box>
+              </group>
+            </group>
           </Furniture>
 
           {/* Coffee Table */}
