@@ -60,7 +60,7 @@ const SYMPTOMS = {
     }
 };
 
-const MusicGenerator = ({ setLampIntensity, setLampHue }) => {
+const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [status, setStatus] = useState('Ready');
     const [activeSymptom, setActiveSymptom] = useState('normal'); // Default
@@ -137,6 +137,16 @@ const MusicGenerator = ({ setLampIntensity, setLampHue }) => {
 
     const handleSymptomClick = (key) => {
         setActiveSymptom(key);
+
+        if (key === 'normal') {
+            console.log("Normal mode selected: Stopping music, starting clock.");
+            stopMusic();
+            if (setIsClockRunning) setIsClockRunning(true);
+            return;
+        }
+
+        // For other symptoms: Stop clock to avoid lighting conflict
+        if (setIsClockRunning) setIsClockRunning(false);
 
         // Set Lighting
         const symptom = SYMPTOMS[key];

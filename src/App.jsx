@@ -14,16 +14,20 @@ function App() {
   const [lampHue, setLampHue] = useState(30); // Default warm orange
   const [hoveredFurniture, setHoveredFurniture] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isClockRunning, setIsClockRunning] = useState(true);
 
   return (
     <>
       <MusicGenerator
         setLampIntensity={setLampIntensity}
         setLampHue={setLampHue}
+        setIsClockRunning={setIsClockRunning}
       />
       <CircadianClock
         setLampIntensity={setLampIntensity}
         setLampHue={setLampHue}
+        isRunning={isClockRunning}
+        setIsRunning={setIsClockRunning}
       />
       <Canvas
         shadows

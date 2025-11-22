@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-const CircadianClock = ({ setLampIntensity, setLampHue }) => {
+const CircadianClock = ({ setLampIntensity, setLampHue, isRunning, setIsRunning }) => {
   const [time, setTime] = useState(7 * 60); // Start at 7:00 AM
-  const [isRunning, setIsRunning] = useState(true);
+  // const [isRunning, setIsRunning] = useState(true); // Lifted to App.jsx
   const [speed, setSpeed] = useState(100); // Multiplier for speed
 
   useEffect(() => {
