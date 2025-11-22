@@ -131,7 +131,7 @@ Only include properties that should change. If the user just wants information, 
                         transition={{ duration: 0.2 }}
                         style={{
                             width: '350px',
-                            height: '500px',
+                            height: '350px',
                             background: 'rgba(255, 255, 255, 0.1)',
                             backdropFilter: 'blur(10px)',
                             borderRadius: '16px',
