@@ -83,6 +83,11 @@ const HangingLamp = React.memo(function HangingLamp({ position, targetHue, offse
 
 const WindowView = React.memo(function WindowView({ time }) {
   const texture = useTexture('/garden_view.png');
+
+  // Reset texture to 1:1
+  texture.repeat.set(1, 1);
+  texture.offset.set(0, 0);
+
   const meshRef = useRef();
   const lightRef = useRef();
   const pointLightRef = useRef();
@@ -130,13 +135,13 @@ const WindowView = React.memo(function WindowView({ time }) {
 
   return (
     <group position={[0, 3, -5.1]}>
-      <Plane args={[6, 3]}>
+      <Plane args={[3, 3]}>
         <meshBasicMaterial ref={meshRef} map={texture} />
       </Plane>
       {/* Window Light Source (RectArea for reflections) */}
       <rectAreaLight
         ref={lightRef}
-        width={6}
+        width={3}
         height={3}
         position={[0, 0, 0.1]}
         rotation={[0, Math.PI, 0]}
@@ -297,11 +302,11 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
             <meshStandardMaterial {...backWallMaterial} />
           </Plane>
           {/* Left */}
-          <Plane args={[2, 3]} position={[-4, 3, -5]} receiveShadow>
+          <Plane args={[3.5, 3]} position={[-3.25, 3, -5]} receiveShadow>
             <meshStandardMaterial {...backWallMaterial} />
           </Plane>
           {/* Right */}
-          <Plane args={[2, 3]} position={[4, 3, -5]} receiveShadow>
+          <Plane args={[3.5, 3]} position={[3.25, 3, -5]} receiveShadow>
             <meshStandardMaterial {...backWallMaterial} />
           </Plane>
 
@@ -311,19 +316,19 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
           {/* Window Frame */}
           <group position={[0, 3, -5]}>
             {/* Top Frame */}
-            <Box args={[6.2, 0.1, 0.2]} position={[0, 1.55, 0]} castShadow>
+            <Box args={[3.2, 0.1, 0.2]} position={[0, 1.55, 0]} castShadow>
               <meshStandardMaterial color="#333" />
             </Box>
             {/* Bottom Frame */}
-            <Box args={[6.2, 0.1, 0.2]} position={[0, -1.55, 0]} castShadow>
+            <Box args={[3.2, 0.1, 0.2]} position={[0, -1.55, 0]} castShadow>
               <meshStandardMaterial color="#333" />
             </Box>
             {/* Left Frame */}
-            <Box args={[0.1, 3.2, 0.2]} position={[-3.05, 0, 0]} castShadow>
+            <Box args={[0.1, 3.2, 0.2]} position={[-1.55, 0, 0]} castShadow>
               <meshStandardMaterial color="#333" />
             </Box>
             {/* Right Frame */}
-            <Box args={[0.1, 3.2, 0.2]} position={[3.05, 0, 0]} castShadow>
+            <Box args={[0.1, 3.2, 0.2]} position={[1.55, 0, 0]} castShadow>
               <meshStandardMaterial color="#333" />
             </Box>
           </group>
