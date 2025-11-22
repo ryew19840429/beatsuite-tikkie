@@ -5,6 +5,8 @@ import { Overlay } from './components/Overlay';
 import { ChatInterface } from './components/ChatInterface';
 import MusicGenerator from './components/MusicGenerator';
 
+import CircadianClock from './components/CircadianClock';
+
 function App() {
   const [brightness, setBrightness] = useState(0);
   const [isSwinging, setIsSwinging] = useState(false);
@@ -16,6 +18,10 @@ function App() {
   return (
     <>
       <MusicGenerator
+        setLampIntensity={setLampIntensity}
+        setLampHue={setLampHue}
+      />
+      <CircadianClock
         setLampIntensity={setLampIntensity}
         setLampHue={setLampHue}
       />
