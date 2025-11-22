@@ -39,7 +39,7 @@ const CircadianClock = ({ setLampIntensity, setLampHue, isRunning, setIsRunning 
       if (setLampHue) setLampHue(30);
     } else {
       // Night (8 PM - 7 AM): Intensity 0.1 (Red)
-      if (setLampIntensity) setLampIntensity(0.1);
+      if (setLampIntensity) setLampIntensity(0.0);
       if (setLampHue) setLampHue(0);
     }
   };

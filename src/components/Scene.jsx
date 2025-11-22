@@ -148,6 +148,7 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
   const backWallMaterial = useMemo(() => ({ color: "#554444", roughness: 1 }), []);
   const leftWallMaterial = useMemo(() => ({ color: "#222", roughness: 1 }), []);
   const rightWallMaterial = useMemo(() => ({ color: "#333", roughness: 1 }), []);
+  const ceilingMaterial = useMemo(() => ({ color: "#444", roughness: 1 }), []);
   const sofaMaterial = useMemo(() => ({ color: "#885555", roughness: 0.2 }), []);
   const tableMaterial = useMemo(() => ({ color: "#222", roughness: 0.2 }), []);
   const chairMaterial = useMemo(() => ({ color: "#555566", roughness: 0.2 }), []);
@@ -238,6 +239,16 @@ export function Scene({ brightness, isSwinging, lampIntensity, lampHue, setHover
             receiveShadow
           >
             <meshStandardMaterial {...rightWallMaterial} />
+          </Plane>
+
+          {/* Ceiling */}
+          <Plane
+            args={[10, 10]}
+            position={[0, 6, 0]}
+            rotation={[Math.PI / 2, 0, 0]}
+            receiveShadow
+          >
+            <meshStandardMaterial {...ceilingMaterial} />
           </Plane>
         </group>
 
