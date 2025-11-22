@@ -46,14 +46,14 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
                 style={{
+                    width: '360px',
+                    boxSizing: 'border-box',
                     pointerEvents: 'auto',
                     background: 'rgba(255, 255, 255, 0.1)',
                     backdropFilter: 'blur(10px)',
                     padding: '24px',
                     borderRadius: '16px',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
-                    maxWidth: '400px',
-                    width: '100%'
                 }}
             >
                 <h1 style={{
