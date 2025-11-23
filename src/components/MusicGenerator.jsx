@@ -261,10 +261,10 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
             borderRadius: '12px',
             boxSizing: 'border-box',
             width: '360px',
-            position: 'absolute',
-            top: '30px',
-            right: '30px',
-            zIndex: 1000,
+            // position: 'absolute', // Handled by parent
+            // top: '30px',
+            // right: '30px',
+            // zIndex: 1000,
             backdropFilter: 'blur(10px)',
             border: '1px solid rgba(255,255,255,0.1)'
         }}>

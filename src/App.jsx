@@ -19,13 +19,7 @@ function App() {
 
   return (
     <>
-      <MusicGenerator
-        setLampIntensity={setLampIntensity}
-        setLampHue={setLampHue}
-        setIsClockRunning={setIsClockRunning}
-        activeSymptom={activeSymptom}
-        setActiveSymptom={setActiveSymptom}
-      />
+
       <CircadianClock
         setLampIntensity={setLampIntensity}
         setLampHue={setLampHue}
@@ -64,7 +58,26 @@ function App() {
         setLampHue={setLampHue}
       />
 
-      <SymptomExplanation activeSymptom={activeSymptom} />
+      <div style={{
+        position: 'absolute',
+        top: '30px',
+        right: '30px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '20px',
+        zIndex: 1000,
+        alignItems: 'flex-end'
+      }}>
+        <MusicGenerator
+          setLampIntensity={setLampIntensity}
+          setLampHue={setLampHue}
+          setIsClockRunning={setIsClockRunning}
+          activeSymptom={activeSymptom}
+          setActiveSymptom={setActiveSymptom}
+        />
+
+        <SymptomExplanation activeSymptom={activeSymptom} />
+      </div>
     </>
   );
 }
