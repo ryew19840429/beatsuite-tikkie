@@ -292,22 +292,18 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
                 ))}
             </div>
 
-            {activeSymptom !== 'normal' && (
+            {activeSymptom !== 'normal' && isPlaying && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <button
                         onClick={() => {
-                            if (isPlaying) {
-                                stopMusic();
-                                setActiveSymptom('normal');
-                                if (setIsClockRunning) setIsClockRunning(true);
-                            } else {
-                                startMusic(activeSymptom);
-                            }
+                            stopMusic();
+                            setActiveSymptom('normal');
+                            if (setIsClockRunning) setIsClockRunning(true);
                         }}
                         style={{
                             padding: '10px 16px',
-                            background: isPlaying ? '#ff4444' : '#44ff44',
-                            color: isPlaying ? 'white' : 'black',
+                            background: '#ff4444',
+                            color: 'white',
                             border: 'none',
                             borderRadius: '4px',
                             cursor: 'pointer',
@@ -315,7 +311,7 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
                             flex: 1
                         }}
                     >
-                        {isPlaying ? 'Stop' : 'Start Generation'}
+                        Stop
                     </button>
                 </div>
             )}
