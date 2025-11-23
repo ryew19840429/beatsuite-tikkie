@@ -60,10 +60,10 @@ const SYMPTOMS = {
     }
 };
 
-const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning }) => {
+const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activeSymptom, setActiveSymptom }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [status, setStatus] = useState('Ready');
-    const [activeSymptom, setActiveSymptom] = useState('normal'); // Default
+    // const [activeSymptom, setActiveSymptom] = useState('normal'); // Lifted to App.jsx
 
     const audioContextRef = useRef(null);
     const sessionRef = useRef(null);

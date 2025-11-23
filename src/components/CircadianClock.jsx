@@ -46,10 +46,10 @@ const CircadianClock = ({ setLampIntensity, setLampHue, isRunning, setIsRunning,
 
   const getPhaseLabel = (minutes) => {
     const hour = minutes / 60;
-    if (hour >= 7 && hour < 12) return "Morning (Acrophase)";
-    if (hour >= 12 && hour < 17) return "Afternoon (Stability)";
-    if (hour >= 17 && hour < 20) return "Evening (Sleep Prep)";
-    return "Night (Rest)";
+    if (hour >= 7 && hour < 12) return { main: "Morning", sub: "(Acrophase)" };
+    if (hour >= 12 && hour < 17) return { main: "Afternoon", sub: "(Interdaily Stability)" };
+    if (hour >= 17 && hour < 20) return { main: "Evening", sub: "(Homeostatic Drive to Sleep)" };
+    return { main: "Night", sub: "(Rest)" };
   };
 
   // Calculate rotations
@@ -139,10 +139,13 @@ const CircadianClock = ({ setLampIntensity, setLampHue, isRunning, setIsRunning,
       </div>
 
       <div style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: '0.9rem', fontWeight: '600', color: '#fff' }}>
-          {getPhaseLabel(time)}
+        <div style={{ fontSize: '1rem', fontWeight: '600', color: '#fff' }}>
+          {getPhaseLabel(time).main}
         </div>
-        <div style={{ fontSize: '0.8rem', color: '#aaa', marginTop: '2px' }}>
+        <div style={{ fontSize: '0.8rem', color: '#ccc', marginTop: '2px' }}>
+          {getPhaseLabel(time).sub}
+        </div>
+        <div style={{ fontSize: '0.8rem', color: '#aaa', marginTop: '4px' }}>
           {Math.floor(time / 60) % 12 === 0 ? 12 : Math.floor(time / 60) % 12}:{String(time % 60).padStart(2, '0')} {time >= 720 ? 'PM' : 'AM'}
         </div>
       </div>

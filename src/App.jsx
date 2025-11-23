@@ -6,6 +6,7 @@ import { ChatInterface } from './components/ChatInterface';
 import MusicGenerator from './components/MusicGenerator';
 
 import CircadianClock from './components/CircadianClock';
+import SymptomExplanation from './components/SymptomExplanation';
 
 function App() {
   const [lampIntensity, setLampIntensity] = useState(1);
@@ -14,6 +15,7 @@ function App() {
   const [isDragging, setIsDragging] = useState(false);
   const [isClockRunning, setIsClockRunning] = useState(true);
   const [time, setTime] = useState(7 * 60); // Start at 7:00 AM
+  const [activeSymptom, setActiveSymptom] = useState('normal');
 
   return (
     <>
@@ -21,6 +23,8 @@ function App() {
         setLampIntensity={setLampIntensity}
         setLampHue={setLampHue}
         setIsClockRunning={setIsClockRunning}
+        activeSymptom={activeSymptom}
+        setActiveSymptom={setActiveSymptom}
       />
       <CircadianClock
         setLampIntensity={setLampIntensity}
@@ -59,6 +63,8 @@ function App() {
         setLampIntensity={setLampIntensity}
         setLampHue={setLampHue}
       />
+
+      <SymptomExplanation activeSymptom={activeSymptom} />
     </>
   );
 }

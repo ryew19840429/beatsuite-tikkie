@@ -47,7 +47,7 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
                 transition={{ duration: 0.8, delay: 0.5 }}
                 style={{
                     width: '220px',
-                    marginBottom: '295px', // Space for CircadianClock + 30px gap
+                    marginBottom: '330px', // Increased space for CircadianClock + gap
                     boxSizing: 'border-box',
                     pointerEvents: 'auto',
                     background: 'rgba(20, 20, 20, 0.9)', // Match clock background
