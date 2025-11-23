@@ -223,7 +223,7 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
   const ceilingMaterial = useMemo(() => ({ color: "#444", roughness: 1 }), []);
   const sofaMaterial = useMemo(() => ({ color: "#885555", roughness: 0.2 }), []);
   const tableMaterial = useMemo(() => ({ color: "#222", roughness: 0.2 }), []);
-  const chairMaterial = useMemo(() => ({ color: "#555566", roughness: 0.2 }), []);
+  const chairMaterial = useMemo(() => ({ color: "#222", roughness: 0.2 }), []); // Black box
   const ottomanMaterial = useMemo(() => ({ color: "#665555", roughness: 0.2 }), []);
   const tvStandMaterial = useMemo(() => ({ color: "#111", roughness: 0.2 }), []);
 
@@ -367,7 +367,7 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
         {/* Furniture Placeholders */}
         <group position={[0, -1.5, 0]}>
           {/* Medical Bed (Detailed) */}
-          <Furniture initialPosition={[3.2, 0, 1]} name="Bed" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
+          <Furniture initialPosition={[0, 0, 0]} name="Bed" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
             <group rotation={[0, Math.PI, 0]}>
               {/* Legs & Wheels */}
               {[[-1, 1], [-1, -1], [1, 1], [1, -1]].map(([x, z], i) => (
@@ -449,28 +449,28 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
           </Furniture>
 
           {/* Coffee Table */}
-          <Furniture initialPosition={[-0.5, 0.2, 2]} name="Coffee Table" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
+          <Furniture initialPosition={[0, 0.2, 2.5]} name="Coffee Table" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
             <Box args={[1.5, 0.4, 1]} castShadow receiveShadow>
               <meshStandardMaterial {...tableMaterial} />
             </Box>
           </Furniture>
 
           {/* Chair */}
-          <Furniture initialPosition={[-2.5, 0.4, 0]} name="Chair" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
+          <Furniture initialPosition={[-2.5, 0.4, 0.5]} name="Chair" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
             <Box args={[1, 0.8, 1]} rotation={[0, 0.5, 0]} castShadow receiveShadow>
               <meshStandardMaterial {...chairMaterial} />
             </Box>
           </Furniture>
 
           {/* Ottoman */}
-          <Furniture initialPosition={[-2.2, 0.25, 1.5]} name="Ottoman" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
+          <Furniture initialPosition={[-2, 0.25, 2.5]} name="Ottoman" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
             <Box args={[0.8, 0.5, 0.8]} rotation={[0, 0.2, 0]} castShadow receiveShadow>
               <meshStandardMaterial {...ottomanMaterial} />
             </Box>
           </Furniture>
 
           {/* TV Stand / Cabinet */}
-          <Furniture initialPosition={[0, 0.3, -4]} name="TV Stand" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
+          <Furniture initialPosition={[0, 0.3, -4.5]} name="TV Stand" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
             <Box args={[6, 0.6, 0.8]} castShadow receiveShadow>
               <meshStandardMaterial {...tvStandMaterial} />
             </Box>
