@@ -292,30 +292,33 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
                 ))}
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <button
-                    onClick={() => {
-                        if (isPlaying) {
-                            stopMusic();
-                            setActiveSymptom('normal');
-                        } else {
-                            startMusic(activeSymptom);
-                        }
-                    }}
-                    style={{
-                        padding: '10px 16px',
-                        background: isPlaying ? '#ff4444' : '#44ff44',
-                        color: isPlaying ? 'white' : 'black',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        fontWeight: 'bold',
-                        flex: 1
-                    }}
-                >
-                    {isPlaying ? 'Stop' : 'Start Generation'}
-                </button>
-            </div>
+            {activeSymptom !== 'normal' && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <button
+                        onClick={() => {
+                            if (isPlaying) {
+                                stopMusic();
+                                setActiveSymptom('normal');
+                                if (setIsClockRunning) setIsClockRunning(true);
+                            } else {
+                                startMusic(activeSymptom);
+                            }
+                        }}
+                        style={{
+                            padding: '10px 16px',
+                            background: isPlaying ? '#ff4444' : '#44ff44',
+                            color: isPlaying ? 'white' : 'black',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontWeight: 'bold',
+                            flex: 1
+                        }}
+                    >
+                        {isPlaying ? 'Stop' : 'Start Generation'}
+                    </button>
+                </div>
+            )}
             <div style={{ marginTop: '10px', fontSize: '0.8rem', color: '#aaa', textAlign: 'center' }}>
                 Status: {status}
             </div>
