@@ -38,8 +38,8 @@ const EXPLANATIONS = {
     },
     normal: {
         title: "Normal / Relaxed",
-        lighting: "Standard lighting configuration for general relaxation and visibility.",
-        sound: "Balanced background music suitable for everyday activity."
+        lighting: "Standard lighting configuration to mimic the robust circadian rhythm.",
+        sound: "No specific sound configuration."
     }
 };
 
