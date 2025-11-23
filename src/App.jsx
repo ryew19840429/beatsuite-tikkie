@@ -2,7 +2,7 @@ import React, { useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Scene } from './components/Scene';
 import { Overlay } from './components/Overlay';
-import { ChatInterface } from './components/ChatInterface';
+
 import MusicGenerator from './components/MusicGenerator';
 
 import CircadianClock from './components/CircadianClock';
@@ -53,10 +53,7 @@ function App() {
         hoveredFurniture={hoveredFurniture}
       />
 
-      <ChatInterface
-        setLampIntensity={setLampIntensity}
-        setLampHue={setLampHue}
-      />
+
 
       <div style={{
         position: 'absolute',

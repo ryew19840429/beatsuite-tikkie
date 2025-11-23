@@ -294,7 +294,14 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <button
-                    onClick={() => isPlaying ? stopMusic() : startMusic(activeSymptom)}
+                    onClick={() => {
+                        if (isPlaying) {
+                            stopMusic();
+                            setActiveSymptom('normal');
+                        } else {
+                            startMusic(activeSymptom);
+                        }
+                    }}
                     style={{
                         padding: '10px 16px',
                         background: isPlaying ? '#ff4444' : '#44ff44',
