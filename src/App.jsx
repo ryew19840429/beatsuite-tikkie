@@ -7,6 +7,7 @@ import MusicGenerator from './components/MusicGenerator';
 
 import CircadianClock from './components/CircadianClock';
 import SymptomExplanation from './components/SymptomExplanation';
+import NurseVoiceChat from './components/NurseVoiceChat';
 
 function App() {
   const [lampIntensity, setLampIntensity] = useState(1);
@@ -65,6 +66,8 @@ function App() {
         zIndex: 1000,
         alignItems: 'flex-end'
       }}>
+        <NurseVoiceChat setActiveSymptom={setActiveSymptom} />
+
         <MusicGenerator
           setLampIntensity={setLampIntensity}
           setLampHue={setLampHue}
