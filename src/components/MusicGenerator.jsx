@@ -275,7 +275,7 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
     return (
         <div style={{
             padding: '20px',
-            background: 'rgba(0,0,0,0.8)',
+            background: 'rgba(20, 20, 20, 0.7)',
             color: 'white',
             borderRadius: '12px',
             boxSizing: 'border-box',

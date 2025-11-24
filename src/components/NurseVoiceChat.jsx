@@ -245,7 +245,7 @@ const NurseVoiceChat = ({ setActiveSymptom }) => {
     return (
         <div style={{
             width: '220px',
-            background: 'rgba(20, 20, 20, 0.9)',
+            background: 'rgba(20, 20, 20, 0.7)',
             color: 'white',
             padding: '20px',
             borderRadius: '12px',

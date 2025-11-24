@@ -35,7 +35,7 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
                     width: '220px',
                     boxSizing: 'border-box',
                     pointerEvents: 'auto',
-                    background: 'rgba(20, 20, 20, 0.9)',
+                    background: 'rgba(20, 20, 20, 0.7)',
                     backdropFilter: 'blur(10px)',
                     padding: '20px',
                     borderRadius: '16px',
@@ -43,9 +43,7 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
                 }}
             >
 
-
-
-                <div className="control-group" style={{ marginTop: '0.5rem' }}>
+                <div className="control-group">
                     <label style={{ color: '#888', marginBottom: '4px', display: 'block', fontSize: '0.7rem' }}>INTENSITY</label>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <span style={{ fontSize: '1rem' }}>💡</span>

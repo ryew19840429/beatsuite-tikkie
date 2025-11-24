@@ -54,7 +54,7 @@ const SymptomExplanation = ({ activeSymptom }) => {
             // bottom: '30px',
             // right: '30px',
             width: '360px', // Matched to MusicGenerator
-            background: 'rgba(20, 20, 20, 0.9)',
+            background: 'rgba(20, 20, 20, 0.7)',
             color: 'white',
             padding: '20px',
             borderRadius: '12px',
