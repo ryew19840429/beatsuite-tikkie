@@ -26,38 +26,22 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
         };
     }, []);
     return (
-        <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            pointerEvents: 'none',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            alignItems: 'flex-start',
-            padding: '30px',
-            boxSizing: 'border-box',
-            zIndex: 10
-        }}>
+        <>
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
                 style={{
                     width: '220px',
-                    marginBottom: '330px', // Increased space for CircadianClock + gap
                     boxSizing: 'border-box',
                     pointerEvents: 'auto',
-                    background: 'rgba(20, 20, 20, 0.9)', // Match clock background
+                    background: 'rgba(20, 20, 20, 0.9)',
                     backdropFilter: 'blur(10px)',
-                    padding: '20px', // Reduced padding
+                    padding: '20px',
                     borderRadius: '16px',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
                 }}
             >
-
 
 
 
@@ -142,6 +126,6 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
                     {hoveredFurniture}
                 </motion.div>
             )}
-        </div>
+        </>
     );
 }

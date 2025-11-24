@@ -46,16 +46,29 @@ function App() {
         </Suspense>
       </Canvas>
 
-      <Overlay
-        lampIntensity={lampIntensity}
-        setLampIntensity={setLampIntensity}
-        lampHue={lampHue}
-        setLampHue={setLampHue}
-        hoveredFurniture={hoveredFurniture}
-      />
+      {/* Left side: Nurse AI and Overlay */}
+      <div style={{
+        position: 'absolute',
+        top: '30px',
+        left: '30px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '20px',
+        zIndex: 1000,
+        alignItems: 'flex-start'
+      }}>
+        <NurseVoiceChat setActiveSymptom={setActiveSymptom} />
 
+        <Overlay
+          lampIntensity={lampIntensity}
+          setLampIntensity={setLampIntensity}
+          lampHue={lampHue}
+          setLampHue={setLampHue}
+          hoveredFurniture={hoveredFurniture}
+        />
+      </div>
 
-
+      {/* Right side: Music Generator and Symptom Explanation */}
       <div style={{
         position: 'absolute',
         top: '30px',
@@ -66,8 +79,6 @@ function App() {
         zIndex: 1000,
         alignItems: 'flex-end'
       }}>
-        <NurseVoiceChat setActiveSymptom={setActiveSymptom} />
-
         <MusicGenerator
           setLampIntensity={setLampIntensity}
           setLampHue={setLampHue}

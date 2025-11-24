@@ -19,8 +19,10 @@ const CircadianClock = ({ setLampIntensity, setLampHue, isRunning, setIsRunning,
   }, [isRunning, speed]);
 
   useEffect(() => {
-    updateLights(time);
-  }, [time]);
+    if (isRunning) {
+      updateLights(time);
+    }
+  }, [time, isRunning]);
 
   const updateLights = (currentTime) => {
     const hour = currentTime / 60;

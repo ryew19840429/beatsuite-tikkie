@@ -137,32 +137,6 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
 
     const handleSymptomClick = (key) => {
         setActiveSymptom(key);
-
-        if (key === 'normal') {
-            console.log("Normal mode selected: Stopping music, starting clock.");
-            stopMusic();
-            if (setIsClockRunning) setIsClockRunning(true);
-            return;
-        }
-
-        // For other symptoms: Stop clock to avoid lighting conflict
-        if (setIsClockRunning) setIsClockRunning(false);
-
-        // Set Lighting
-        const symptom = SYMPTOMS[key];
-        if (setLampIntensity) setLampIntensity(symptom.lampIntensity);
-        if (setLampHue) setLampHue(symptom.lampHue);
-
-        if (isPlaying) {
-            console.log("Restarting session for new symptom...");
-            stopMusic();
-            // Small delay to ensure cleanup
-            setTimeout(() => {
-                startMusic(key);
-            }, 500);
-        } else {
-            startMusic(key);
-        }
     };
 
     const playAudioChunk = (base64Data) => {
@@ -252,6 +226,51 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
             setIsPlaying(false);
         }
     };
+
+    const isInitialMount = useRef(true);
+
+    useEffect(() => {
+        // Skip the effect on initial mount
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+            return;
+        }
+
+        const key = activeSymptom;
+        if (!key) return;
+
+        console.log("Symptom changed to:", key);
+
+        if (key === 'normal') {
+            console.log("Normal mode selected: Stopping music, starting clock.");
+            stopMusic();
+            if (setIsClockRunning) setIsClockRunning(true);
+            return;
+        }
+
+        // For other symptoms: Stop clock to avoid lighting conflict
+        if (setIsClockRunning) setIsClockRunning(false);
+
+        // Set Lighting
+        const symptom = SYMPTOMS[key];
+        if (symptom) {
+            console.log("Setting lights - Intensity:", symptom.lampIntensity, "Hue:", symptom.lampHue);
+            if (setLampIntensity) setLampIntensity(symptom.lampIntensity);
+            if (setLampHue) setLampHue(symptom.lampHue);
+        }
+
+        if (isPlaying) {
+            console.log("Restarting session for new symptom...");
+            stopMusic();
+            // Small delay to ensure cleanup
+            setTimeout(() => {
+                startMusic(key);
+            }, 500);
+        } else {
+            startMusic(key);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeSymptom]);
 
     return (
         <div style={{
