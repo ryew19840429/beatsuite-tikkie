@@ -50,9 +50,6 @@ const SymptomExplanation = ({ activeSymptom }) => {
 
     return (
         <div style={{
-            // position: 'absolute', // Handled by parent
-            // bottom: '30px',
-            // right: '30px',
             width: '360px', // Matched to MusicGenerator
             background: 'rgba(20, 20, 20, 0.7)',
             color: 'white',
@@ -60,7 +57,6 @@ const SymptomExplanation = ({ activeSymptom }) => {
             borderRadius: '12px',
             backdropFilter: 'blur(10px)',
             border: '1px solid rgba(255, 255, 255, 0.1)',
-            // zIndex: 100,
             boxSizing: 'border-box',
             fontFamily: 'sans-serif'
         }}>

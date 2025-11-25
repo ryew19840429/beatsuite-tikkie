@@ -63,7 +63,6 @@ const SYMPTOMS = {
 const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activeSymptom, setActiveSymptom }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [status, setStatus] = useState('Ready');
-    // const [activeSymptom, setActiveSymptom] = useState('normal'); // Lifted to App.jsx
 
     const audioContextRef = useRef(null);
     const sessionRef = useRef(null);
@@ -107,11 +106,9 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
 
         try {
             // Update Prompts
-            console.log("Updating prompt for:", symptom.label);
             await sessionRef.current.setWeightedPrompts({
                 weightedPrompts: [{ text: symptom.prompt, weight: 1.0 }]
             });
-            console.log("Prompts updated");
 
             // Update Config (Tempo)
             await sessionRef.current.setMusicGenerationConfig({
@@ -123,7 +120,6 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
             console.log("Config updated");
 
             if (shouldReset) {
-                console.log("Resetting context...");
                 // Note: resetContext() is synchronous in some versions or async in others? 
                 // The d.ts said "resetContext(): void", implying sync.
                 // But let's wrap in try/catch just in case.
@@ -180,11 +176,10 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
 
         try {
             setStatus('Connecting...');
-            console.log("Initializing AudioContext...");
+            setStatus('Connecting...');
             audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 44100 });
             nextStartTimeRef.current = audioContextRef.current.currentTime + 0.1;
 
-            console.log("Connecting to Gemini...");
             sessionRef.current = await clientRef.current.live.music.connect({
                 model: "models/lyria-realtime-exp",
                 callbacks: {
@@ -207,18 +202,14 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
                     },
                 },
             });
-            console.log("Connected. Session:", sessionRef.current);
 
             setStatus('Playing');
             setIsPlaying(true);
 
             // Initial setup
-            console.log("Setting initial parameters for:", SYMPTOMS[initialSymptomKey].label);
             await updateSession(initialSymptomKey);
 
-            console.log("Starting playback...");
             await sessionRef.current.play();
-            console.log("Playback started");
 
         } catch (error) {
             console.error("Connection failed:", error);
@@ -239,10 +230,7 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
         const key = activeSymptom;
         if (!key) return;
 
-        console.log("Symptom changed to:", key);
-
         if (key === 'normal') {
-            console.log("Normal mode selected: Stopping music, starting clock.");
             stopMusic();
             if (setIsClockRunning) setIsClockRunning(true);
             return;
@@ -254,13 +242,11 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
         // Set Lighting
         const symptom = SYMPTOMS[key];
         if (symptom) {
-            console.log("Setting lights - Intensity:", symptom.lampIntensity, "Hue:", symptom.lampHue);
             if (setLampIntensity) setLampIntensity(symptom.lampIntensity);
             if (setLampHue) setLampHue(symptom.lampHue);
         }
 
         if (isPlaying) {
-            console.log("Restarting session for new symptom...");
             stopMusic();
             // Small delay to ensure cleanup
             setTimeout(() => {
@@ -280,10 +266,6 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
             borderRadius: '12px',
             boxSizing: 'border-box',
             width: '360px',
-            // position: 'absolute', // Handled by parent
-            // top: '30px',
-            // right: '30px',
-            // zIndex: 1000,
             backdropFilter: 'blur(10px)',
             border: '1px solid rgba(255,255,255,0.1)'
         }}>

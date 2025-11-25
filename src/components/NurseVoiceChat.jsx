@@ -120,7 +120,6 @@ const NurseVoiceChat = ({ setActiveSymptom }) => {
                 },
                 callbacks: {
                     onopen: () => {
-                        console.log("Gemini Live Session Opened");
                         setIsActive(true);
 
                         // Start Audio Capture Loop
@@ -212,7 +211,6 @@ const NurseVoiceChat = ({ setActiveSymptom }) => {
                         }
                     },
                     onclose: () => {
-                        console.log("Session Closed");
                         setIsActive(false);
                     },
                     onerror: (err) => {
