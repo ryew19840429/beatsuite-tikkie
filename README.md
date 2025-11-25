@@ -65,7 +65,7 @@ This project is configured for easy deployment to Google Cloud Run.
 Run the following command in your terminal:
 
 ```bash
-gcloud run deploy nurse-voice-chat --source . --allow-unauthenticated --region us-central1
+gcloud run deploy beatsuite-tikkie --source . --allow-unauthenticated --region us-central1
 ```
 
 *   **`--source .`**: Uploads the current directory to Cloud Build, which builds the Docker image using the included `Dockerfile`.
