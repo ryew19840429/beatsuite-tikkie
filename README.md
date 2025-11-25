@@ -7,6 +7,46 @@
 4. A fully interactive 3D environment to simulate the lights effect. User can rearrange the furniture for optimal ambiance vs lights
 5. A clock that simulates the circadian rhythm of a child
 
+
+## Running Locally
+
+### Prerequisites
+- Node.js (v18 or higher recommended)
+- npm
+
+### Installation
+
+1. Navigate to the project directory.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Configuration
+
+1. Create a `.env` file in the root directory.
+2. Add your Gemini API key:
+   ```
+   VITE_GEMINI_API_KEY=your_api_key_here
+   ```
+
+### Development
+
+Start the development server:
+```bash
+npm run dev
+```
+Open your browser and navigate to the URL shown in the terminal (usually `http://localhost:5173`).
+
+### Unit & Integration Tests
+
+This project uses `vitest` for testing. The tests verify the integration between the Music Generator, Light settings, and the Circadian Clock.
+
+To run the tests:
+```bash
+npm run test
+```
+
 ## Deployment to Google Cloud Run
 
 This project is configured for easy deployment to Google Cloud Run.
