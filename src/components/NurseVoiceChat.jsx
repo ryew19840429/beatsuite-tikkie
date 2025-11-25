@@ -291,7 +291,7 @@ const NurseVoiceChat = ({ setActiveSymptom }) => {
             </button>
 
             <div style={{ textAlign: 'center', fontSize: '0.9rem', color: '#ccc' }}>
-                {isActive ? 'Listening...' : 'Tap to talk to Nurse'}
+                {isActive ? 'Listening...' : 'Tap to talk to Nurse. Try to describe in your own words one of the symptoms'}
             </div>
 
             {error && (

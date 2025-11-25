@@ -287,8 +287,7 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
             backdropFilter: 'blur(10px)',
             border: '1px solid rgba(255,255,255,0.1)'
         }}>
-            <h2 style={{ margin: '0 0 15px 0', fontSize: '1.2rem' }}>Lyra Music Gen</h2>
-
+            <h2 style={{ margin: '0 0 15px 0', fontSize: '1.2rem' }}>Current Symptom</h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '20px' }}>
                 {Object.entries(SYMPTOMS).map(([key, data]) => (
                     <button

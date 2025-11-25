@@ -76,7 +76,7 @@ const SymptomExplanation = ({ activeSymptom }) => {
             </div>
 
             <div>
-                <strong style={{ color: '#44aaff', display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Sound Configuration</strong>
+                <strong style={{ color: '#44aaff', display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>AI Music Generator using Google Lyra</strong>
                 <p style={{ margin: 0, fontSize: '0.85rem', lineHeight: '1.4', color: '#ddd' }}>
                     {data.sound}
                 </p>

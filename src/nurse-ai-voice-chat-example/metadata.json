@@ -1,7 +1,0 @@
-{
-  "name": "Nurse AI Voice Chat",
-  "description": "A real-time voice conversation with an AI nurse that analyzes your stress levels while you chat.",
-  "requestFramePermissions": [
-    "microphone"
-  ]
-}
