@@ -27,10 +27,7 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
     }, []);
     return (
         <>
-            <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
+            <div
                 style={{
                     width: '220px',
                     boxSizing: 'border-box',
@@ -97,7 +94,7 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
                 </div>
 
 
-            </motion.div>
+            </div>
 
             {/* Tooltip */}
             {hoveredFurniture && (

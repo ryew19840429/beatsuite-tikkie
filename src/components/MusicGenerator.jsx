@@ -117,7 +117,7 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
                     temperature: 1.0,
                 }
             });
-            console.log("Config updated");
+
 
             if (shouldReset) {
                 // Note: resetContext() is synchronous in some versions or async in others? 
