@@ -470,7 +470,7 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
           </Furniture>
 
           {/* TV Stand / Cabinet */}
-          <Furniture initialPosition={[0, 0.3, -4.5]} name="TV Stand" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
+          <Furniture initialPosition={[0, 0.3, -4.5]} name="Cabinet" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
             <Box args={[6, 0.6, 0.8]} castShadow receiveShadow>
               <meshStandardMaterial {...tvStandMaterial} />
             </Box>
