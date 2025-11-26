@@ -260,31 +260,43 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
 
     return (
         <div style={{
-            padding: '20px',
-            background: 'rgba(20, 20, 20, 0.7)',
-            color: 'white',
-            borderRadius: '12px',
+            padding: '16px',
+            background: 'var(--color-surface)',
+            color: 'var(--color-text-main)',
+            borderRadius: 'var(--radius-lg)',
             boxSizing: 'border-box',
-            width: '360px',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255,255,255,0.1)'
+            width: '320px',
+            boxShadow: 'var(--shadow-card)',
+            border: '2px solid white',
+            fontFamily: 'var(--font-family)'
         }}>
-            <h2 style={{ margin: '0 0 15px 0', fontSize: '1.2rem' }}>Current Symptom</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '20px' }}>
+            <h2 style={{
+                margin: '0 0 16px 0',
+                fontSize: '1rem',
+                fontWeight: 700,
+                color: 'var(--color-primary)',
+                textAlign: 'center'
+            }}>
+                How are you feeling?
+            </h2>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '16px' }}>
                 {Object.entries(SYMPTOMS).map(([key, data]) => (
                     <button
                         key={key}
                         onClick={() => handleSymptomClick(key)}
                         style={{
                             padding: '10px',
-                            background: activeSymptom === key ? '#44aaff' : 'rgba(255,255,255,0.1)',
-                            color: 'white',
+                            background: activeSymptom === key ? 'var(--color-primary)' : 'var(--color-background)',
+                            color: activeSymptom === key ? 'white' : 'var(--color-text-main)',
                             border: 'none',
-                            borderRadius: '8px',
+                            borderRadius: 'var(--radius-xl)',
                             cursor: 'pointer',
                             fontSize: '0.8rem',
+                            fontWeight: 600,
                             textAlign: 'center',
-                            transition: 'background 0.2s'
+                            transition: 'all 0.2s ease',
+                            boxShadow: activeSymptom === key ? '0 4px 12px rgba(139, 128, 249, 0.3)' : 'none',
+                            transform: activeSymptom === key ? 'scale(1.02)' : 'scale(1)'
                         }}
                     >
                         {data.label}
@@ -302,20 +314,23 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
                         }}
                         style={{
                             padding: '10px 16px',
-                            background: '#ff4444',
+                            background: '#FF8080',
                             color: 'white',
                             border: 'none',
-                            borderRadius: '4px',
+                            borderRadius: 'var(--radius-full)',
                             cursor: 'pointer',
-                            fontWeight: 'bold',
-                            flex: 1
+                            fontWeight: '700',
+                            fontSize: '0.85rem',
+                            flex: 1,
+                            boxShadow: '0 4px 12px rgba(255, 128, 128, 0.3)',
+                            transition: 'transform 0.2s'
                         }}
                     >
-                        Stop
+                        Stop Music
                     </button>
                 </div>
             )}
-            <div style={{ marginTop: '10px', fontSize: '0.8rem', color: '#aaa', textAlign: 'center' }}>
+            <div style={{ marginTop: '12px', fontSize: '0.75rem', color: 'var(--color-text-secondary)', textAlign: 'center', fontWeight: 500 }}>
                 Status: {status}
             </div>
         </div>

@@ -1,11 +1,31 @@
 :root {
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Quicksand', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
-  font-weight: 400;
+  font-weight: 500;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #1a1a1a;
+  color-scheme: light;
+
+  /* Edulite Theme Colors */
+  --color-primary: #8B80F9;
+  /* Soft Purple */
+  --color-secondary: #FFB7B2;
+  /* Soft Pink */
+  --color-accent: #FFDAC1;
+  /* Soft Peach/Orange */
+  --color-background: #F3F5F9;
+  /* Very light blue-grey */
+  --color-surface: #FFFFFF;
+  --color-text-main: #2D2D2D;
+  --color-text-secondary: #666666;
+
+  /* UI Shapes */
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-soft: 0 10px 30px rgba(139, 128, 249, 0.15);
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.05);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -19,7 +39,8 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: #050505; /* Very dark background for the room vibe */
+  background: #050505;
+  /* Very dark background for the room vibe */
 }
 
 #root {

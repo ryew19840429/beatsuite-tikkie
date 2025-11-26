@@ -21,14 +21,7 @@ function App() {
   return (
     <>
 
-      <CircadianClock
-        setLampIntensity={setLampIntensity}
-        setLampHue={setLampHue}
-        isRunning={isClockRunning}
-        setIsRunning={setIsClockRunning}
-        time={time}
-        setTime={setTime}
-      />
+
       <Canvas
         shadows
         camera={{ position: [0, 2, 8], fov: 50 }}
@@ -49,13 +42,15 @@ function App() {
       {/* Left side: Nurse AI and Overlay */}
       <div style={{
         position: 'absolute',
-        top: '30px',
-        left: '30px',
+        top: '20px',
+        left: '20px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '20px',
+        gap: '12px',
         zIndex: 1000,
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        transform: 'scale(0.9)',
+        transformOrigin: 'top left'
       }}>
         <NurseVoiceChat setActiveSymptom={setActiveSymptom} />
 
@@ -66,18 +61,29 @@ function App() {
           setLampHue={setLampHue}
           hoveredFurniture={hoveredFurniture}
         />
+
+        <CircadianClock
+          setLampIntensity={setLampIntensity}
+          setLampHue={setLampHue}
+          isRunning={isClockRunning}
+          setIsRunning={setIsClockRunning}
+          time={time}
+          setTime={setTime}
+        />
       </div>
 
       {/* Right side: Music Generator and Symptom Explanation */}
       <div style={{
         position: 'absolute',
-        top: '30px',
-        right: '30px',
+        top: '20px',
+        right: '20px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '20px',
+        gap: '12px',
         zIndex: 1000,
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
+        transform: 'scale(0.9)',
+        transformOrigin: 'top right'
       }}>
         <MusicGenerator
           setLampIntensity={setLampIntensity}

@@ -29,20 +29,23 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
         <>
             <div
                 style={{
-                    width: '220px',
+                    width: '240px',
                     boxSizing: 'border-box',
                     pointerEvents: 'auto',
-                    background: 'rgba(20, 20, 20, 0.7)',
-                    backdropFilter: 'blur(10px)',
-                    padding: '20px',
-                    borderRadius: '16px',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    background: 'var(--color-surface)',
+                    padding: '16px',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '2px solid white',
+                    boxShadow: 'var(--shadow-card)',
+                    fontFamily: 'var(--font-family)'
                 }}
             >
 
                 <div className="control-group">
-                    <label style={{ color: '#888', marginBottom: '4px', display: 'block', fontSize: '0.7rem' }}>INTENSITY</label>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <label style={{ color: 'var(--color-text-secondary)', marginBottom: '6px', display: 'block', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.5px' }}>
+                        INTENSITY
+                    </label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <span style={{ fontSize: '1rem' }}>💡</span>
                         <input
                             type="range"
@@ -53,9 +56,12 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
                             onChange={(e) => setLampIntensity(parseFloat(e.target.value))}
                             style={{
                                 flex: 1,
-                                accentColor: 'white',
+                                accentColor: 'var(--color-primary)',
                                 cursor: 'pointer',
-                                width: '100%'
+                                width: '100%',
+                                height: '4px',
+                                borderRadius: '2px',
+                                background: 'var(--color-background)'
                             }}
                         />
                         <span style={{ fontSize: '1rem' }}>🔥</span>
@@ -63,14 +69,17 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
                 </div>
 
                 <div className="control-group" style={{ marginTop: '1rem' }}>
-                    <label style={{ color: '#888', marginBottom: '4px', display: 'block', fontSize: '0.7rem' }}>COLOR</label>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <label style={{ color: 'var(--color-text-secondary)', marginBottom: '6px', display: 'block', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.5px' }}>
+                        COLOR
+                    </label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <div style={{
-                            width: '18px',
-                            height: '18px',
+                            width: '20px',
+                            height: '20px',
                             borderRadius: '50%',
                             backgroundColor: `hsl(${lampHue}, 100%, 50%)`,
                             border: '2px solid white',
+                            boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
                             flexShrink: 0
                         }} />
                         <input
@@ -81,12 +90,12 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
                             onChange={(e) => setLampHue(parseFloat(e.target.value))}
                             style={{
                                 flex: 1,
-                                accentColor: 'white',
+                                accentColor: 'var(--color-primary)',
                                 cursor: 'pointer',
-                                background: 'linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet, red)',
+                                background: 'linear-gradient(to right, #FF8080, #FFB74D, #FFF176, #81C784, #4FC3F7, #7986CB, #BA68C8, #FF8080)',
                                 appearance: 'none',
-                                height: '4px',
-                                borderRadius: '2px',
+                                height: '6px',
+                                borderRadius: '3px',
                                 width: '100%'
                             }}
                         />
@@ -99,23 +108,24 @@ export function Overlay({ brightness, setBrightness, isSwinging, setIsSwinging, 
             {/* Tooltip */}
             {hoveredFurniture && (
                 <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
+                    initial={{ opacity: 0, y: -10, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
                     style={{
                         position: 'fixed',
-                        left: `${mousePos.x + 15}px`,
-                        top: `${mousePos.y + 15}px`,
-                        background: 'rgba(255, 255, 255, 0.95)',
-                        color: '#000',
-                        padding: '8px 16px',
-                        borderRadius: '6px',
+                        left: `${mousePos.x + 20}px`,
+                        top: `${mousePos.y + 20}px`,
+                        background: 'var(--color-surface)',
+                        color: 'var(--color-text-main)',
+                        padding: '10px 20px',
+                        borderRadius: 'var(--radius-full)',
                         fontSize: '0.95rem',
-                        fontWeight: 500,
+                        fontWeight: 600,
                         pointerEvents: 'none',
-                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                        boxShadow: 'var(--shadow-soft)',
                         zIndex: 100,
-                        whiteSpace: 'nowrap'
+                        whiteSpace: 'nowrap',
+                        border: '2px solid white'
                     }}
                 >
                     {hoveredFurniture}

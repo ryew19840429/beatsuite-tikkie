@@ -50,30 +50,41 @@ const SymptomExplanation = ({ activeSymptom }) => {
 
     return (
         <div style={{
-            width: '360px', // Matched to MusicGenerator
-            background: 'rgba(20, 20, 20, 0.7)',
-            color: 'white',
-            padding: '20px',
-            borderRadius: '12px',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            width: '320px', // Matched to MusicGenerator
+            background: 'var(--color-surface)',
+            color: 'var(--color-text-main)',
+            padding: '16px',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: 'var(--shadow-card)',
+            border: '2px solid white',
             boxSizing: 'border-box',
-            fontFamily: 'sans-serif'
+            fontFamily: 'var(--font-family)'
         }}>
-            <h3 style={{ margin: '0 0 15px 0', fontSize: '1.1rem', borderBottom: '1px solid #444', paddingBottom: '10px' }}>
+            <h3 style={{
+                margin: '0 0 12px 0',
+                fontSize: '1rem',
+                fontWeight: 700,
+                color: 'var(--color-primary)',
+                borderBottom: '2px solid var(--color-background)',
+                paddingBottom: '8px'
+            }}>
                 {data.title}
             </h3>
 
-            <div style={{ marginBottom: '15px' }}>
-                <strong style={{ color: '#ffcc00', display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Lighting Configuration</strong>
-                <p style={{ margin: 0, fontSize: '0.85rem', lineHeight: '1.4', color: '#ddd' }}>
+            <div style={{ marginBottom: '16px' }}>
+                <strong style={{ color: '#FFB74D', display: 'block', marginBottom: '4px', fontSize: '0.8rem', fontWeight: 700 }}>
+                    Lighting Configuration
+                </strong>
+                <p style={{ margin: 0, fontSize: '0.8rem', lineHeight: '1.4', color: 'var(--color-text-secondary)' }}>
                     {data.lighting}
                 </p>
             </div>
 
             <div>
-                <strong style={{ color: '#44aaff', display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>AI Music Generator using Google Lyria</strong>
-                <p style={{ margin: 0, fontSize: '0.85rem', lineHeight: '1.4', color: '#ddd' }}>
+                <strong style={{ color: '#4FC3F7', display: 'block', marginBottom: '4px', fontSize: '0.8rem', fontWeight: 700 }}>
+                    AI Music Generator
+                </strong>
+                <p style={{ margin: 0, fontSize: '0.8rem', lineHeight: '1.4', color: 'var(--color-text-secondary)' }}>
                     {data.sound}
                 </p>
             </div>

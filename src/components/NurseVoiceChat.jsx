@@ -242,21 +242,28 @@ const NurseVoiceChat = ({ setActiveSymptom }) => {
 
     return (
         <div style={{
-            width: '220px',
-            background: 'rgba(20, 20, 20, 0.7)',
-            color: 'white',
-            padding: '20px',
-            borderRadius: '12px',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            width: '240px',
+            background: 'var(--color-surface)',
+            color: 'var(--color-text-main)',
+            padding: '16px',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: 'var(--shadow-card)',
+            border: '2px solid white',
             boxSizing: 'border-box',
-            fontFamily: 'sans-serif',
+            fontFamily: 'var(--font-family)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '15px'
+            gap: '12px'
         }}>
-            <h3 style={{ margin: 0, fontSize: '1.1rem', borderBottom: '1px solid #444', paddingBottom: '10px', width: '100%', textAlign: 'center' }}>
+            <h3 style={{
+                margin: 0,
+                fontSize: '1rem',
+                fontWeight: 700,
+                color: 'var(--color-primary)',
+                width: '100%',
+                textAlign: 'center'
+            }}>
                 Nurse AI
             </h3>
 
@@ -265,35 +272,36 @@ const NurseVoiceChat = ({ setActiveSymptom }) => {
                 style={{
                     width: '60px',
                     height: '60px',
-                    borderRadius: '50%',
+                    borderRadius: 'var(--radius-full)',
                     border: 'none',
-                    background: isActive ? '#ef4444' : '#3b82f6',
+                    background: isActive ? '#FF8080' : 'var(--color-primary)',
                     color: 'white',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    transition: 'all 0.3s ease',
-                    boxShadow: isActive ? '0 0 15px rgba(239, 68, 68, 0.5)' : '0 0 15px rgba(59, 130, 246, 0.5)'
+                    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    boxShadow: isActive ? '0 8px 20px rgba(255, 128, 128, 0.4)' : 'var(--shadow-soft)',
+                    transform: isActive ? 'scale(1.05)' : 'scale(1)'
                 }}
             >
                 {isActive ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: '30px', height: '30px' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" style={{ width: '28px', height: '28px' }}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: '30px', height: '30px' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" style={{ width: '28px', height: '28px' }}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
                     </svg>
                 )}
             </button>
 
-            <div style={{ textAlign: 'center', fontSize: '0.9rem', color: '#ccc' }}>
-                {isActive ? 'Listening...' : 'Tap to talk to Nurse. Try to describe in your own words one of the symptoms'}
+            <div style={{ textAlign: 'center', fontSize: '0.85rem', color: 'var(--color-text-secondary)', lineHeight: '1.3' }}>
+                {isActive ? 'Listening...' : 'Tap to talk to Nurse'}
             </div>
 
             {error && (
-                <div style={{ color: '#ef4444', fontSize: '0.8rem', textAlign: 'center' }}>
+                <div style={{ color: '#FF8080', fontSize: '0.9rem', textAlign: 'center', fontWeight: 600 }}>
                     {error}
                 </div>
             )}

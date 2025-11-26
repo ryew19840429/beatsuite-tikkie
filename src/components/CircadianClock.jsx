@@ -58,33 +58,30 @@ const CircadianClock = ({ setLampIntensity, setLampHue, isRunning, setIsRunning,
 
   return (
     <div style={{
-      position: 'absolute',
-      bottom: '30px',
-      left: '30px',
-      width: '220px',
+      width: '240px',
       boxSizing: 'border-box',
-      background: 'rgba(20, 20, 20, 0.7)',
-      color: 'white',
-      padding: '20px',
-      borderRadius: '24px',
+      background: 'var(--color-surface)',
+      color: 'var(--color-text-main)',
+      padding: '16px',
+      borderRadius: 'var(--radius-lg)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      gap: '15px',
-      backdropFilter: 'blur(10px)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
+      gap: '12px',
+      border: '2px solid white',
       zIndex: 100,
-      boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
+      boxShadow: 'var(--shadow-card)',
+      fontFamily: 'var(--font-family)'
     }}>
       {/* Analog Clock Face */}
       <div style={{
-        width: '120px',
-        height: '120px',
+        width: '100px',
+        height: '100px',
         borderRadius: '50%',
         background: 'white',
         position: 'relative',
-        boxShadow: 'inset 0 0 10px rgba(0,0,0,0.2)',
-        border: '4px solid #333'
+        boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.05)',
+        border: '4px solid var(--color-background)'
       }}>
         {/* Clock Markers */}
         {[...Array(12)].map((_, i) => (
@@ -92,10 +89,11 @@ const CircadianClock = ({ setLampIntensity, setLampHue, isRunning, setIsRunning,
             position: 'absolute',
             top: '50%',
             left: '50%',
-            width: '2px',
-            height: '10px',
-            background: '#333',
-            transform: `translate(-50%, -50%) rotate(${i * 30}deg) translate(0, -50px)`
+            width: '3px',
+            height: '8px',
+            background: 'var(--color-text-secondary)',
+            borderRadius: '2px',
+            transform: `translate(-50%, -50%) rotate(${i * 30}deg) translate(0, -42px)`
           }} />
         ))}
 
@@ -104,12 +102,13 @@ const CircadianClock = ({ setLampIntensity, setLampHue, isRunning, setIsRunning,
           position: 'absolute',
           top: '50%',
           left: '50%',
-          width: '4px',
-          height: '35px',
-          background: '#000',
-          borderRadius: '2px',
+          width: '5px',
+          height: '28px',
+          background: 'var(--color-text-main)',
+          borderRadius: '3px',
           transformOrigin: 'bottom center',
-          transform: `translate(-50%, -100%) rotate(${hourRotation}deg)`
+          transform: `translate(-50%, -100%) rotate(${hourRotation}deg)`,
+          zIndex: 2
         }} />
 
         {/* Minute Hand */}
@@ -117,12 +116,13 @@ const CircadianClock = ({ setLampIntensity, setLampHue, isRunning, setIsRunning,
           position: 'absolute',
           top: '50%',
           left: '50%',
-          width: '2px',
-          height: '45px',
-          background: '#555',
-          borderRadius: '1px',
+          width: '3px',
+          height: '38px',
+          background: 'var(--color-primary)',
+          borderRadius: '2px',
           transformOrigin: 'bottom center',
-          transform: `translate(-50%, -100%) rotate(${minuteRotation}deg)`
+          transform: `translate(-50%, -100%) rotate(${minuteRotation}deg)`,
+          zIndex: 1
         }} />
 
         {/* Center Dot */}
@@ -130,42 +130,54 @@ const CircadianClock = ({ setLampIntensity, setLampHue, isRunning, setIsRunning,
           position: 'absolute',
           top: '50%',
           left: '50%',
-          width: '8px',
-          height: '8px',
-          background: '#e74c3c',
+          width: '10px',
+          height: '10px',
+          background: 'var(--color-secondary)',
           borderRadius: '50%',
-          transform: 'translate(-50%, -50%)'
+          transform: 'translate(-50%, -50%)',
+          zIndex: 3,
+          boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
         }} />
       </div>
 
       <div style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: '1rem', fontWeight: '600', color: '#fff' }}>
+        <div style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--color-primary)' }}>
           {getPhaseLabel(time).main}
         </div>
-        <div style={{ fontSize: '0.8rem', color: '#ccc', marginTop: '2px' }}>
+        <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', marginTop: '2px', fontWeight: 500 }}>
           {getPhaseLabel(time).sub}
         </div>
-        <div style={{ fontSize: '0.8rem', color: '#aaa', marginTop: '4px' }}>
+        <div style={{
+          fontSize: '1.2rem',
+          color: 'var(--color-text-main)',
+          marginTop: '6px',
+          fontFamily: 'monospace',
+          fontWeight: 700,
+          background: 'var(--color-background)',
+          padding: '4px 10px',
+          borderRadius: '6px'
+        }}>
           {Math.floor(time / 60) % 12 === 0 ? 12 : Math.floor(time / 60) % 12}:{String(time % 60).padStart(2, '0')} {time >= 720 ? 'PM' : 'AM'}
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: '16px', alignItems: 'center', width: '100%', justifyContent: 'center' }}>
         <button
           onClick={() => setIsRunning(!isRunning)}
           style={{
-            background: isRunning ? '#ff4444' : '#44ff44',
+            background: isRunning ? '#FF8080' : 'var(--color-primary)',
             border: 'none',
             borderRadius: '50%',
-            width: '36px',
-            height: '36px',
+            width: '40px',
+            height: '40px',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: isRunning ? 'white' : 'black',
-            fontSize: '1.2rem',
-            transition: 'transform 0.1s'
+            color: 'white',
+            fontSize: '1rem',
+            transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            boxShadow: isRunning ? '0 4px 12px rgba(255, 128, 128, 0.4)' : 'var(--shadow-soft)'
           }}
           onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'}
           onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
@@ -173,15 +185,22 @@ const CircadianClock = ({ setLampIntensity, setLampHue, isRunning, setIsRunning,
           <span style={{ paddingLeft: isRunning ? '0' : '4px' }}>{isRunning ? '⏸' : '▶'}</span>
         </button>
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <span style={{ fontSize: '0.7rem', color: '#888', marginBottom: '2px' }}>SPEED</span>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
+          <span style={{ fontSize: '0.65rem', color: 'var(--color-text-secondary)', marginBottom: '4px', fontWeight: 700, letterSpacing: '0.5px' }}>SPEED</span>
           <input
             type="range"
             min="1"
             max="100"
             value={speed}
             onChange={(e) => setSpeed(parseInt(e.target.value))}
-            style={{ width: '80px', accentColor: '#667eea' }}
+            style={{
+              width: '100%',
+              accentColor: 'var(--color-primary)',
+              cursor: 'pointer',
+              height: '4px',
+              borderRadius: '2px',
+              background: 'var(--color-background)'
+            }}
             title="Simulation Speed"
           />
         </div>
