@@ -45,7 +45,7 @@ const CloudLamp = React.memo(function CloudLamp({ position, targetHue, offset = 
     // Apply to Light
     if (lightRef.current) {
       lightRef.current.color.setHSL(currentHue.current / 360, 1, 0.5);
-      lightRef.current.intensity = currentIntensity.current * 8; // Significantly reduced from 20
+      lightRef.current.intensity = currentIntensity.current * 4; // Reduced to 50% of previous (was 8)
     }
 
     // Apply to Bulb Material (The Cloud itself)
@@ -53,7 +53,7 @@ const CloudLamp = React.memo(function CloudLamp({ position, targetHue, offset = 
       const color = new Color().setHSL(currentHue.current / 360, 1, 0.8); // Slightly lighter for the cloud
       bulbRef.current.color.lerp(color, 0.1);
       bulbRef.current.emissive.copy(color);
-      bulbRef.current.emissiveIntensity = currentIntensity.current * 0.2;
+      bulbRef.current.emissiveIntensity = currentIntensity.current * 0.1;
     }
   });
 
@@ -217,11 +217,11 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
     // Update Wall Light
     if (wallLightRef.current) {
       wallLightRef.current.color.copy(color);
-      wallLightRef.current.intensity = intensity * 10; // Reduced multiplier (was 20)
+      wallLightRef.current.intensity = intensity * 5; // Reduced multiplier (was 10)
     }
     if (wallSconceRef.current) {
       wallSconceRef.current.material.emissive.copy(color);
-      wallSconceRef.current.material.emissiveIntensity = intensity * 0.5;
+      wallSconceRef.current.material.emissiveIntensity = intensity * 0.25;
     }
   });
 
@@ -269,7 +269,7 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
       <pointLight
         ref={tableLightRef}
         position={[-2, 1, -1]}
-        intensity={15} // Reduced from 40*0.8 (32)
+        intensity={8} // Reduced from 15
         color="#ffccaa"
         distance={5}
         decay={2}
