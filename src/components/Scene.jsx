@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Color, MathUtils } from 'three';
+import { Color, MathUtils, RepeatWrapping } from 'three';
 import { Box, Plane, Sphere, Cylinder, SoftShadows, OrbitControls, useTexture } from '@react-three/drei';
 import { Selection, Select, EffectComposer, Outline } from '@react-three/postprocessing';
 import { Draggable } from './Draggable';
@@ -230,11 +230,17 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
   const mainLightIntensity = 0.75; // Reduced main light base (was 1.5)
   // const lampColor = `hsl(${lampHue}, 100%, 70%)`; // Removed in favor of interpolation
 
+  // Load Textures
+  const rightWallTexture = useTexture('/wallpaper_right.png');
+  rightWallTexture.wrapS = rightWallTexture.wrapT = RepeatWrapping;
+  rightWallTexture.repeat.set(1, 1); // Adjust scale if needed
+
   // Memoize materials to avoid recreation on every render
   const floorMaterial = useMemo(() => ({ color: "#E0C39C", roughness: 0.6 }), []); // Light Oak
   const backWallMaterial = useMemo(() => ({ color: "#4FACFE", roughness: 1 }), []); // Bright Blue
   const leftWallMaterial = useMemo(() => ({ color: "#4FACFE", roughness: 1 }), []); // Bright Blue
-  const rightWallMaterial = useMemo(() => ({ color: "#4FACFE", roughness: 1 }), []); // Bright Blue
+  // Right Wall now uses the texture
+  const rightWallMaterial = useMemo(() => ({ map: rightWallTexture, roughness: 1 }), [rightWallTexture]);
   const ceilingMaterial = useMemo(() => ({ color: "#F0F2F5", roughness: 1 }), []); // White/Light Grey
 
   // Furniture Materials
@@ -317,21 +323,7 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
             <meshStandardMaterial {...backWallMaterial} />
           </Plane>
 
-          {/* Star Decorations on Back Wall */}
-          {[...Array(20)].map((_, i) => (
-            <Cylinder
-              key={i}
-              args={[0.1, 0.1, 0.02, 5]}
-              position={[
-                (Math.random() - 0.5) * 9,
-                Math.random() * 5 + 1,
-                -4.98
-              ]}
-              rotation={[Math.PI / 2, 0, Math.random() * Math.PI]}
-            >
-              <meshBasicMaterial color="#FFD93D" />
-            </Cylinder>
-          ))}
+
           {/* Left */}
           <Plane args={[3.5, 3]} position={[-3.25, 3, -5]} receiveShadow>
             <meshStandardMaterial {...backWallMaterial} />
