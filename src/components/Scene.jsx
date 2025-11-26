@@ -64,28 +64,28 @@ const CloudLamp = React.memo(function CloudLamp({ position, targetHue, offset = 
         <meshStandardMaterial color="white" />
       </Cylinder>
 
-      {/* Cloud Shape (Cluster of spheres) */}
+      {/* Cloud Shape (Cluster of spheres) - Scaled down */}
       <group position={[0, -2, 0]}>
-        <Sphere args={[0.3, 16, 16]} position={[0, 0, 0]}>
+        <Sphere args={[0.15, 16, 16]} position={[0, 0, 0]}>
           <meshStandardMaterial ref={bulbRef} color="white" roughness={0.4} />
         </Sphere>
-        <Sphere args={[0.25, 16, 16]} position={[0.25, 0.1, 0.1]}>
+        <Sphere args={[0.12, 16, 16]} position={[0.12, 0.05, 0.05]}>
           <meshStandardMaterial color="white" roughness={0.4} />
         </Sphere>
-        <Sphere args={[0.25, 16, 16]} position={[-0.25, 0.05, -0.1]}>
+        <Sphere args={[0.12, 16, 16]} position={[-0.12, 0.02, -0.05]}>
           <meshStandardMaterial color="white" roughness={0.4} />
         </Sphere>
-        <Sphere args={[0.2, 16, 16]} position={[0.1, -0.1, 0.2]}>
+        <Sphere args={[0.1, 16, 16]} position={[0.05, -0.05, 0.1]}>
           <meshStandardMaterial color="white" roughness={0.4} />
         </Sphere>
-        <Sphere args={[0.2, 16, 16]} position={[-0.1, 0.15, -0.2]}>
+        <Sphere args={[0.1, 16, 16]} position={[-0.05, 0.07, -0.1]}>
           <meshStandardMaterial color="white" roughness={0.4} />
         </Sphere>
       </group>
 
       <pointLight
         ref={lightRef}
-        position={[0, -2.2, 0]}
+        position={[0, -2.6, 0]}
         distance={0}
         castShadow
         shadow-mapSize={[64, 64]}
@@ -285,9 +285,9 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
         </EffectComposer>
 
         {/* Cloud Lamps */}
-        <CloudLamp position={[-1.5, 0, -3]} targetHue={lampHue} offset={0} targetIntensity={lampIntensity} />
-        <CloudLamp position={[0, 0, -3]} targetHue={lampHue} offset={1} targetIntensity={lampIntensity} />
-        <CloudLamp position={[1.5, 0, -3]} targetHue={lampHue} offset={2} targetIntensity={lampIntensity} />
+        <CloudLamp position={[-1.5, 0, 0]} targetHue={lampHue} offset={0} targetIntensity={lampIntensity} />
+        <CloudLamp position={[0, 0, 0]} targetHue={lampHue} offset={1} targetIntensity={lampIntensity} />
+        <CloudLamp position={[1.5, 0, 0]} targetHue={lampHue} offset={2} targetIntensity={lampIntensity} />
 
         {/* Wall Light on Left Wall */}
         <group position={[-4.95, 2, 0]}>
@@ -444,7 +444,7 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
           </Furniture>
 
           {/* Teepee Tent (Replaces Chair) */}
-          <Furniture initialPosition={[-2.5, 0, 2]} name="Teepee" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
+          <Furniture initialPosition={[-3.2, 0, 1.0]} name="Teepee" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
             <group rotation={[0, 0.5, 0]}>
               {/* Poles */}
               <Cylinder args={[0.04, 0.06, 2.5, 8]} position={[0.5, 1.2, 0.5]} rotation={[0, 0, -0.2]} castShadow><meshStandardMaterial {...woodMaterial} /></Cylinder>
@@ -467,8 +467,9 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
           <Furniture initialPosition={[-1.5, 0.15, 3]} name="Blocks" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
             <group>
               <Box args={[0.3, 0.3, 0.3]} position={[0, 0, 0]} rotation={[0, 0.2, 0]} castShadow><meshStandardMaterial {...blueMaterial} /></Box>
-              <Box args={[0.3, 0.3, 0.3]} position={[0.2, 0.3, 0.1]} rotation={[0.1, 0.1, 0.1]} castShadow><meshStandardMaterial {...yellowMaterial} /></Box>
-              <Box args={[0.3, 0.3, 0.3]} position={[-0.2, 0, 0.4]} rotation={[0, -0.2, 0]} castShadow><meshStandardMaterial {...greenMaterial} /></Box>
+              {/* Yellow block lowered to 0.28 to sink into the blue block slightly, preventing light gaps */}
+              <Box args={[0.3, 0.3, 0.3]} position={[0.1, 0.28, 0.05]} rotation={[0, 0.1, 0]} castShadow><meshStandardMaterial {...yellowMaterial} /></Box>
+              <Box args={[0.3, 0.3, 0.3]} position={[-0.25, 0, 0.4]} rotation={[0, -0.2, 0]} castShadow><meshStandardMaterial {...greenMaterial} /></Box>
             </group>
           </Furniture>
 
