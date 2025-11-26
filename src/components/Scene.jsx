@@ -22,7 +22,7 @@ const Furniture = React.memo(function Furniture({ children, initialPosition, nam
   );
 });
 
-const HangingLamp = React.memo(function HangingLamp({ position, targetHue, offset = 0, targetIntensity = 1 }) {
+const CloudLamp = React.memo(function CloudLamp({ position, targetHue, offset = 0, targetIntensity = 1 }) {
   const groupRef = useRef();
   const lightRef = useRef();
   const bulbRef = useRef();
@@ -32,41 +32,56 @@ const HangingLamp = React.memo(function HangingLamp({ position, targetHue, offse
   const currentIntensity = useRef(targetIntensity);
 
   useFrame((state, delta) => {
-    // 1. Pendulum animation removed
+    // 1. Gentle floating animation
     if (groupRef.current) {
-      groupRef.current.rotation.z = MathUtils.lerp(groupRef.current.rotation.z, 0, delta * 5);
+      groupRef.current.position.y = 4.5 + Math.sin(state.clock.elapsedTime + offset) * 0.1;
     }
 
-    // 2. Smooth Lighting Transition
-    // Interpolate values (Speed factor 1.5 gives approx 3s settling time)
+    // 2. Smooth Lighting Transition (Preserved Logic)
     const lerpSpeed = delta * 1.5;
     currentHue.current = MathUtils.lerp(currentHue.current, targetHue, lerpSpeed);
     currentIntensity.current = MathUtils.lerp(currentIntensity.current, targetIntensity, lerpSpeed);
-    // console.log("HangingLamp Intensity:", currentIntensity.current, "Target:", targetIntensity);
 
     // Apply to Light
     if (lightRef.current) {
       lightRef.current.color.setHSL(currentHue.current / 360, 1, 0.5);
-      lightRef.current.intensity = currentIntensity.current * 20; // Reduced multiplier (was 40)
+      lightRef.current.intensity = currentIntensity.current * 8; // Significantly reduced from 20
     }
 
-    // Apply to Bulb Material
+    // Apply to Bulb Material (The Cloud itself)
     if (bulbRef.current) {
-      const color = new Color().setHSL(currentHue.current / 360, 1, 0.7);
-      bulbRef.current.material.emissive.copy(color);
-      bulbRef.current.material.emissiveIntensity = currentIntensity.current * 0.5;
+      const color = new Color().setHSL(currentHue.current / 360, 1, 0.8); // Slightly lighter for the cloud
+      bulbRef.current.color.lerp(color, 0.1);
+      bulbRef.current.emissive.copy(color);
+      bulbRef.current.emissiveIntensity = currentIntensity.current * 0.2;
     }
   });
 
   return (
     <group ref={groupRef} position={[position[0], 4.5, position[2]]}>
-      <Cylinder args={[0.02, 0.02, 2, 6]} position={[0, -1, 0]}>
-        <meshStandardMaterial color="black" />
+      {/* Cord */}
+      <Cylinder args={[0.01, 0.01, 2, 6]} position={[0, -1, 0]}>
+        <meshStandardMaterial color="white" />
       </Cylinder>
 
-      <Sphere ref={bulbRef} args={[0.15, 8, 8]} position={[0, -2, 0]} castShadow={false}>
-        <meshStandardMaterial color="white" />
-      </Sphere>
+      {/* Cloud Shape (Cluster of spheres) */}
+      <group position={[0, -2, 0]}>
+        <Sphere args={[0.3, 16, 16]} position={[0, 0, 0]}>
+          <meshStandardMaterial ref={bulbRef} color="white" roughness={0.4} />
+        </Sphere>
+        <Sphere args={[0.25, 16, 16]} position={[0.25, 0.1, 0.1]}>
+          <meshStandardMaterial color="white" roughness={0.4} />
+        </Sphere>
+        <Sphere args={[0.25, 16, 16]} position={[-0.25, 0.05, -0.1]}>
+          <meshStandardMaterial color="white" roughness={0.4} />
+        </Sphere>
+        <Sphere args={[0.2, 16, 16]} position={[0.1, -0.1, 0.2]}>
+          <meshStandardMaterial color="white" roughness={0.4} />
+        </Sphere>
+        <Sphere args={[0.2, 16, 16]} position={[-0.1, 0.15, -0.2]}>
+          <meshStandardMaterial color="white" roughness={0.4} />
+        </Sphere>
+      </group>
 
       <pointLight
         ref={lightRef}
@@ -184,7 +199,7 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
       // For simplicity and requested effect, let's sync it to the main vibe but maybe slightly warmer.
       // Actually user said "light settings", implying all lights.
       tableLightRef.current.color.copy(color);
-      tableLightRef.current.intensity = intensity * 10; // Reduced multiplier (was 20)
+      tableLightRef.current.intensity = intensity * 5; // Reduced multiplier (was 10)
       // Wait, original table lamp was: intensity={mainLightIntensity * 0.8} where mainLightIntensity = brightness * 30
       // It didn't use lampIntensity.
       // BUT the user wants "light transition" for the circadian clock.
@@ -202,7 +217,7 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
     // Update Wall Light
     if (wallLightRef.current) {
       wallLightRef.current.color.copy(color);
-      wallLightRef.current.intensity = intensity * 20; // Reduced multiplier (was 40)
+      wallLightRef.current.intensity = intensity * 10; // Reduced multiplier (was 20)
     }
     if (wallSconceRef.current) {
       wallSconceRef.current.material.emissive.copy(color);
@@ -216,25 +231,25 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
   // const lampColor = `hsl(${lampHue}, 100%, 70%)`; // Removed in favor of interpolation
 
   // Memoize materials to avoid recreation on every render
-  const floorMaterial = useMemo(() => ({ color: "#333", roughness: 0.8 }), []);
-  const backWallMaterial = useMemo(() => ({ color: "#554444", roughness: 1 }), []);
-  const leftWallMaterial = useMemo(() => ({ color: "#222", roughness: 1 }), []);
-  const rightWallMaterial = useMemo(() => ({ color: "#333", roughness: 1 }), []);
-  const ceilingMaterial = useMemo(() => ({ color: "#444", roughness: 1 }), []);
-  const sofaMaterial = useMemo(() => ({ color: "#885555", roughness: 0.2 }), []);
-  const tableMaterial = useMemo(() => ({ color: "#222", roughness: 0.2 }), []);
-  const chairMaterial = useMemo(() => ({ color: "#222", roughness: 0.2 }), []); // Black box
-  const ottomanMaterial = useMemo(() => ({ color: "#665555", roughness: 0.2 }), []);
-  const tvStandMaterial = useMemo(() => ({ color: "#111", roughness: 0.2 }), []);
+  const floorMaterial = useMemo(() => ({ color: "#E0C39C", roughness: 0.6 }), []); // Light Oak
+  const backWallMaterial = useMemo(() => ({ color: "#4FACFE", roughness: 1 }), []); // Bright Blue
+  const leftWallMaterial = useMemo(() => ({ color: "#4FACFE", roughness: 1 }), []); // Bright Blue
+  const rightWallMaterial = useMemo(() => ({ color: "#4FACFE", roughness: 1 }), []); // Bright Blue
+  const ceilingMaterial = useMemo(() => ({ color: "#F0F2F5", roughness: 1 }), []); // White/Light Grey
+
+  // Furniture Materials
+  const woodMaterial = useMemo(() => ({ color: "#F5DEB3", roughness: 0.5 }), []); // Light Wood
+  const fabricMaterial = useMemo(() => ({ color: "#FF6B6B", roughness: 0.8 }), []); // Red Fabric
+  const yellowMaterial = useMemo(() => ({ color: "#FFD93D", roughness: 0.4 }), []); // Bright Yellow
+  const blueMaterial = useMemo(() => ({ color: "#4D96FF", roughness: 0.4 }), []); // Bright Blue
+  const greenMaterial = useMemo(() => ({ color: "#6BCB77", roughness: 0.4 }), []); // Bright Green
+  const whiteMaterial = useMemo(() => ({ color: "#FFFFFF", roughness: 0.5 }), []);
 
   // Bed Materials
-  const bedOrangeMaterial = useMemo(() => ({ color: "#ff9f43", roughness: 0.5 }), []);
-  const bedBlueMaterial = useMemo(() => ({ color: "#2e86de", roughness: 0.6 }), []);
-  const bedLightBlueMaterial = useMemo(() => ({ color: "#54a0ff", roughness: 0.6 }), []);
-  const bedMetalMaterial = useMemo(() => ({ color: "#bdc3c7", roughness: 0.3, metalness: 0.8 }), []);
-  const bedWheelMaterial = useMemo(() => ({ color: "#2c3e50", roughness: 0.8 }), []);
-  const bedPillowMaterial = useMemo(() => ({ color: "#ffffff", roughness: 0.9 }), []);
-  const ivBagMaterial = useMemo(() => ({ color: "#9b59b6", roughness: 0.3, transparent: true, opacity: 0.8 }), []);
+  const bedFrameMaterial = useMemo(() => ({ color: "#FFFFFF", roughness: 0.5 }), []); // White Wood
+  const bedMattressMaterial = useMemo(() => ({ color: "#F0F0F0", roughness: 0.8 }), []);
+  const bedSheetMaterial = useMemo(() => ({ color: "#FF9F43", roughness: 0.8 }), []); // Orange/Yellow Sheet
+  const bedPillowMaterial = useMemo(() => ({ color: "#FFFFFF", roughness: 0.9 }), []);
 
   return (
     <>
@@ -248,7 +263,7 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
       <pointLight
         ref={tableLightRef}
         position={[-2, 1, -1]}
-        intensity={40 * 0.8} // Fixed intensity
+        intensity={15} // Reduced from 40*0.8 (32)
         color="#ffccaa"
         distance={5}
         decay={2}
@@ -263,10 +278,10 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
           <Outline edgeStrength={10} width={1000} visibleEdgeColor="white" hiddenEdgeColor="white" />
         </EffectComposer>
 
-        {/* Hanging Lamps */}
-        <HangingLamp position={[-1.5, 0, -3]} targetHue={lampHue} offset={0} targetIntensity={lampIntensity} />
-        <HangingLamp position={[0, 0, -3]} targetHue={lampHue} offset={1} targetIntensity={lampIntensity} />
-        <HangingLamp position={[1.5, 0, -3]} targetHue={lampHue} offset={2} targetIntensity={lampIntensity} />
+        {/* Cloud Lamps */}
+        <CloudLamp position={[-1.5, 0, -3]} targetHue={lampHue} offset={0} targetIntensity={lampIntensity} />
+        <CloudLamp position={[0, 0, -3]} targetHue={lampHue} offset={1} targetIntensity={lampIntensity} />
+        <CloudLamp position={[1.5, 0, -3]} targetHue={lampHue} offset={2} targetIntensity={lampIntensity} />
 
         {/* Wall Light on Left Wall */}
         <group position={[-4.95, 2, 0]}>
@@ -301,6 +316,22 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
           <Plane args={[10, 1.5]} position={[0, 0.75, -5]} receiveShadow>
             <meshStandardMaterial {...backWallMaterial} />
           </Plane>
+
+          {/* Star Decorations on Back Wall */}
+          {[...Array(20)].map((_, i) => (
+            <Cylinder
+              key={i}
+              args={[0.1, 0.1, 0.02, 5]}
+              position={[
+                (Math.random() - 0.5) * 9,
+                Math.random() * 5 + 1,
+                -4.98
+              ]}
+              rotation={[Math.PI / 2, 0, Math.random() * Math.PI]}
+            >
+              <meshBasicMaterial color="#FFD93D" />
+            </Cylinder>
+          ))}
           {/* Left */}
           <Plane args={[3.5, 3]} position={[-3.25, 3, -5]} receiveShadow>
             <meshStandardMaterial {...backWallMaterial} />
@@ -366,114 +397,100 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
 
         {/* Furniture Placeholders */}
         <group position={[0, -1.5, 0]}>
-          {/* Medical Bed (Detailed) */}
+
+          {/* Rug */}
+          <group position={[0, 0.01, 1]}>
+            <Cylinder args={[2.5, 2.5, 0.02, 32]} receiveShadow>
+              <meshStandardMaterial color="#FFD93D" />
+            </Cylinder>
+            <Cylinder args={[2, 2, 0.03, 32]} receiveShadow>
+              <meshStandardMaterial color="#FF6B6B" />
+            </Cylinder>
+            <Cylinder args={[1.5, 1.5, 0.04, 32]} receiveShadow>
+              <meshStandardMaterial color="#4D96FF" />
+            </Cylinder>
+          </group>
+
+          {/* House Frame Bed */}
           <Furniture initialPosition={[0, 0, 0]} name="Bed" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
             <group rotation={[0, Math.PI, 0]}>
-              {/* Legs & Wheels */}
-              {[[-1, 1], [-1, -1], [1, 1], [1, -1]].map(([x, z], i) => (
-                <group key={i} position={[x, 0.2, z * 0.5]}>
-                  <Cylinder args={[0.05, 0.05, 0.4, 8]} position={[0, 0, 0]} castShadow receiveShadow>
-                    <meshStandardMaterial {...bedMetalMaterial} />
-                  </Cylinder>
-                  <Cylinder args={[0.08, 0.08, 0.1, 16]} rotation={[Math.PI / 2, 0, 0]} position={[0, -0.2, 0]} castShadow receiveShadow>
-                    <meshStandardMaterial {...bedWheelMaterial} />
-                  </Cylinder>
-                </group>
-              ))}
-
-              {/* Main Frame */}
-              <Box args={[2.2, 0.1, 1.2]} position={[0, 0.45, 0]} castShadow receiveShadow>
-                <meshStandardMaterial {...bedMetalMaterial} />
-              </Box>
-
               {/* Mattress */}
-              <Box args={[2.1, 0.2, 1.1]} position={[0, 0.6, 0]} castShadow receiveShadow>
-                <meshStandardMaterial {...bedBlueMaterial} />
+              <Box args={[2.2, 0.3, 1.2]} position={[0, 0.15, 0]} castShadow receiveShadow>
+                <meshStandardMaterial {...bedMattressMaterial} />
               </Box>
-
-              {/* Folded Sheet */}
-              <Box args={[0.8, 0.22, 1.12]} position={[0.2, 0.6, 0]} castShadow receiveShadow>
-                <meshStandardMaterial {...bedLightBlueMaterial} />
+              {/* Sheet */}
+              <Box args={[2.22, 0.2, 1.22]} position={[0, 0.1, 0]} castShadow receiveShadow>
+                <meshStandardMaterial {...bedSheetMaterial} />
               </Box>
-
               {/* Pillow */}
-              <Box args={[0.4, 0.15, 0.8]} position={[-0.8, 0.75, 0]} rotation={[0, 0, 0.1]} castShadow receiveShadow>
+              <Box args={[0.5, 0.15, 0.8]} position={[-0.7, 0.35, 0]} rotation={[0, 0, 0.1]} castShadow receiveShadow>
                 <meshStandardMaterial {...bedPillowMaterial} />
               </Box>
 
-              {/* Headboard */}
-              <group position={[-1.1, 0.8, 0]}>
-                <Box args={[0.1, 0.8, 1.2]} castShadow receiveShadow>
-                  <meshStandardMaterial {...bedOrangeMaterial} />
-                </Box>
-                {/* Blue Panels */}
-                <Box args={[0.12, 0.3, 0.3]} position={[0, 0.1, 0]} castShadow receiveShadow>
-                  <meshStandardMaterial {...bedLightBlueMaterial} />
-                </Box>
-                <Box args={[0.12, 0.3, 0.3]} position={[0, 0.1, 0.35]} castShadow receiveShadow>
-                  <meshStandardMaterial {...bedLightBlueMaterial} />
-                </Box>
-                <Box args={[0.12, 0.3, 0.3]} position={[0, 0.1, -0.35]} castShadow receiveShadow>
-                  <meshStandardMaterial {...bedLightBlueMaterial} />
-                </Box>
-              </group>
+              {/* House Frame */}
+              <group position={[0, 0, 0]}>
+                {/* Posts */}
+                <Box args={[0.05, 1.5, 0.05]} position={[-1.05, 0.75, 0.55]} castShadow><meshStandardMaterial {...bedFrameMaterial} /></Box>
+                <Box args={[0.05, 1.5, 0.05]} position={[-1.05, 0.75, -0.55]} castShadow><meshStandardMaterial {...bedFrameMaterial} /></Box>
+                <Box args={[0.05, 1.5, 0.05]} position={[1.05, 0.75, 0.55]} castShadow><meshStandardMaterial {...bedFrameMaterial} /></Box>
+                <Box args={[0.05, 1.5, 0.05]} position={[1.05, 0.75, -0.55]} castShadow><meshStandardMaterial {...bedFrameMaterial} /></Box>
 
-              {/* Footboard */}
-              <group position={[1.1, 0.6, 0]}>
-                <Box args={[0.1, 0.6, 1.2]} castShadow receiveShadow>
-                  <meshStandardMaterial {...bedOrangeMaterial} />
-                </Box>
-                {/* Blue Panels */}
-                <Box args={[0.12, 0.2, 0.3]} position={[0, 0.1, 0]} castShadow receiveShadow>
-                  <meshStandardMaterial {...bedLightBlueMaterial} />
-                </Box>
-                <Box args={[0.12, 0.2, 0.3]} position={[0, 0.1, 0.35]} castShadow receiveShadow>
-                  <meshStandardMaterial {...bedLightBlueMaterial} />
-                </Box>
-                <Box args={[0.12, 0.2, 0.3]} position={[0, 0.1, -0.35]} castShadow receiveShadow>
-                  <meshStandardMaterial {...bedLightBlueMaterial} />
-                </Box>
-              </group>
+                {/* Top Beams */}
+                <Box args={[2.1, 0.05, 0.05]} position={[0, 1.5, 0.55]} castShadow><meshStandardMaterial {...bedFrameMaterial} /></Box>
+                <Box args={[2.1, 0.05, 0.05]} position={[0, 1.5, -0.55]} castShadow><meshStandardMaterial {...bedFrameMaterial} /></Box>
 
-              {/* IV Stand */}
-              <group position={[-1.1, 0, -0.7]}>
-                <Cylinder args={[0.02, 0.02, 1.8, 8]} position={[0, 0.9, 0]} castShadow receiveShadow>
-                  <meshStandardMaterial {...bedMetalMaterial} />
-                </Cylinder>
-                {/* IV Bag */}
-                <Box args={[0.15, 0.2, 0.05]} position={[0, 1.7, 0.1]} castShadow receiveShadow>
-                  <meshStandardMaterial {...ivBagMaterial} />
-                </Box>
+                {/* Roof */}
+                <Box args={[0.05, 1.1, 0.05]} position={[-1.05, 1.9, 0]} rotation={[Math.PI / 4, 0, 0]} castShadow><meshStandardMaterial {...bedFrameMaterial} /></Box>
+                <Box args={[0.05, 1.1, 0.05]} position={[-1.05, 1.9, 0]} rotation={[-Math.PI / 4, 0, 0]} castShadow><meshStandardMaterial {...bedFrameMaterial} /></Box>
+                <Box args={[0.05, 1.1, 0.05]} position={[1.05, 1.9, 0]} rotation={[Math.PI / 4, 0, 0]} castShadow><meshStandardMaterial {...bedFrameMaterial} /></Box>
+                <Box args={[0.05, 1.1, 0.05]} position={[1.05, 1.9, 0]} rotation={[-Math.PI / 4, 0, 0]} castShadow><meshStandardMaterial {...bedFrameMaterial} /></Box>
+
+                {/* Roof Top Beam */}
+                <Box args={[2.2, 0.05, 0.05]} position={[0, 2.3, 0]} castShadow><meshStandardMaterial {...bedFrameMaterial} /></Box>
               </group>
             </group>
           </Furniture>
 
-          {/* Coffee Table */}
-          <Furniture initialPosition={[0, 0.2, 2.5]} name="Coffee Table" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
-            <Box args={[1.5, 0.4, 1]} castShadow receiveShadow>
-              <meshStandardMaterial {...tableMaterial} />
-            </Box>
+          {/* Teepee Tent (Replaces Chair) */}
+          <Furniture initialPosition={[-2.5, 0, 2]} name="Teepee" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
+            <group rotation={[0, 0.5, 0]}>
+              {/* Poles */}
+              <Cylinder args={[0.04, 0.06, 2.5, 8]} position={[0.5, 1.2, 0.5]} rotation={[0, 0, -0.2]} castShadow><meshStandardMaterial {...woodMaterial} /></Cylinder>
+              <Cylinder args={[0.04, 0.06, 2.5, 8]} position={[-0.5, 1.2, 0.5]} rotation={[0, 0, 0.2]} castShadow><meshStandardMaterial {...woodMaterial} /></Cylinder>
+              <Cylinder args={[0.04, 0.06, 2.5, 8]} position={[0, 1.2, -0.6]} rotation={[0.2, 0, 0]} castShadow><meshStandardMaterial {...woodMaterial} /></Cylinder>
+
+              {/* Fabric Cover */}
+              <Cylinder args={[0.1, 1, 1.8, 32, 1, true]} position={[0, 0.9, 0]} castShadow receiveShadow>
+                <meshStandardMaterial {...fabricMaterial} side={2} />
+              </Cylinder>
+
+              {/* Floor Cushion */}
+              <Cylinder args={[0.9, 0.9, 0.1, 32]} position={[0, 0.05, 0]} receiveShadow>
+                <meshStandardMaterial {...yellowMaterial} />
+              </Cylinder>
+            </group>
           </Furniture>
 
-          {/* Chair */}
-          <Furniture initialPosition={[-2.5, 0.4, 0.5]} name="Chair" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
-            <Box args={[1, 0.8, 1]} rotation={[0, 0.5, 0]} castShadow receiveShadow>
-              <meshStandardMaterial {...chairMaterial} />
-            </Box>
+          {/* Toy Blocks (Replaces Ottoman) */}
+          <Furniture initialPosition={[-1.5, 0.15, 3]} name="Blocks" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
+            <group>
+              <Box args={[0.3, 0.3, 0.3]} position={[0, 0, 0]} rotation={[0, 0.2, 0]} castShadow><meshStandardMaterial {...blueMaterial} /></Box>
+              <Box args={[0.3, 0.3, 0.3]} position={[0.2, 0.3, 0.1]} rotation={[0.1, 0.1, 0.1]} castShadow><meshStandardMaterial {...yellowMaterial} /></Box>
+              <Box args={[0.3, 0.3, 0.3]} position={[-0.2, 0, 0.4]} rotation={[0, -0.2, 0]} castShadow><meshStandardMaterial {...greenMaterial} /></Box>
+            </group>
           </Furniture>
 
-          {/* Ottoman */}
-          <Furniture initialPosition={[-2, 0.25, 2.5]} name="Ottoman" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
-            <Box args={[0.8, 0.5, 0.8]} rotation={[0, 0.2, 0]} castShadow receiveShadow>
-              <meshStandardMaterial {...ottomanMaterial} />
-            </Box>
-          </Furniture>
-
-          {/* TV Stand / Cabinet */}
-          <Furniture initialPosition={[0, 0.3, -4.5]} name="Cabinet" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
-            <Box args={[6, 0.6, 0.8]} castShadow receiveShadow>
-              <meshStandardMaterial {...tvStandMaterial} />
-            </Box>
+          {/* Low Cabinet / Toy Storage (Replaces TV Stand) */}
+          <Furniture initialPosition={[0, 0.4, -4.5]} name="Toy Storage" setHoveredFurniture={setHoveredFurniture} setIsDragging={setIsDragging}>
+            <group>
+              <Box args={[4, 0.8, 0.8]} castShadow receiveShadow>
+                <meshStandardMaterial {...whiteMaterial} />
+              </Box>
+              {/* Drawers */}
+              <Box args={[0.8, 0.6, 0.05]} position={[-1.2, 0, 0.4]}><meshStandardMaterial {...blueMaterial} /></Box>
+              <Box args={[0.8, 0.6, 0.05]} position={[0, 0, 0.4]}><meshStandardMaterial {...yellowMaterial} /></Box>
+              <Box args={[0.8, 0.6, 0.05]} position={[1.2, 0, 0.4]}><meshStandardMaterial {...fabricMaterial} /></Box>
+            </group>
           </Furniture>
         </group>
       </Selection>
