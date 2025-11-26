@@ -246,6 +246,7 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
   // Furniture Materials
   const woodMaterial = useMemo(() => ({ color: "#F5DEB3", roughness: 0.5 }), []); // Light Wood
   const fabricMaterial = useMemo(() => ({ color: "#FF6B6B", roughness: 0.8 }), []); // Red Fabric
+  const bearMaterial = useMemo(() => ({ color: "#8D6E63", roughness: 0.9 }), []); // Brown Fur
   const yellowMaterial = useMemo(() => ({ color: "#FFD93D", roughness: 0.4 }), []); // Bright Yellow
   const blueMaterial = useMemo(() => ({ color: "#4D96FF", roughness: 0.4 }), []); // Bright Blue
   const greenMaterial = useMemo(() => ({ color: "#6BCB77", roughness: 0.4 }), []); // Bright Green
@@ -439,6 +440,30 @@ export function Scene({ lampIntensity, lampHue, setHoveredFurniture, isDragging,
 
                 {/* Roof Top Beam */}
                 <Box args={[2.2, 0.05, 0.05]} position={[0, 2.3, 0]} castShadow><meshStandardMaterial {...bedFrameMaterial} /></Box>
+              </group>
+
+              {/* Teddy Bear */}
+              <group position={[0.4, 0.45, 0.2]} rotation={[0, Math.PI - 0.2, 0]}>
+                {/* Body */}
+                <Sphere args={[0.18, 16, 16]} position={[0, 0, 0]} castShadow><meshStandardMaterial {...bearMaterial} /></Sphere>
+                {/* Head */}
+                <Sphere args={[0.14, 16, 16]} position={[0, 0.22, 0]} castShadow><meshStandardMaterial {...bearMaterial} /></Sphere>
+                {/* Ears */}
+                <Sphere args={[0.05, 16, 16]} position={[0.1, 0.32, 0]} castShadow><meshStandardMaterial {...bearMaterial} /></Sphere>
+                <Sphere args={[0.05, 16, 16]} position={[-0.1, 0.32, 0]} castShadow><meshStandardMaterial {...bearMaterial} /></Sphere>
+                {/* Snout */}
+                <Sphere args={[0.06, 16, 16]} position={[0, 0.2, 0.12]} castShadow><meshStandardMaterial color="#D7CCC8" /></Sphere>
+                {/* Nose */}
+                <Sphere args={[0.02, 16, 16]} position={[0, 0.22, 0.17]} castShadow><meshStandardMaterial color="#3E2723" /></Sphere>
+                {/* Eyes */}
+                <Sphere args={[0.015, 16, 16]} position={[0.05, 0.25, 0.13]} castShadow><meshStandardMaterial color="black" /></Sphere>
+                <Sphere args={[0.015, 16, 16]} position={[-0.05, 0.25, 0.13]} castShadow><meshStandardMaterial color="black" /></Sphere>
+                {/* Arms */}
+                <Sphere args={[0.08, 16, 16]} position={[0.16, 0.05, 0.05]} castShadow><meshStandardMaterial {...bearMaterial} /></Sphere>
+                <Sphere args={[0.08, 16, 16]} position={[-0.16, 0.05, 0.05]} castShadow><meshStandardMaterial {...bearMaterial} /></Sphere>
+                {/* Legs */}
+                <Sphere args={[0.09, 16, 16]} position={[0.1, -0.15, 0.15]} castShadow><meshStandardMaterial {...bearMaterial} /></Sphere>
+                <Sphere args={[0.09, 16, 16]} position={[-0.1, -0.15, 0.15]} castShadow><meshStandardMaterial {...bearMaterial} /></Sphere>
               </group>
             </group>
           </Furniture>
