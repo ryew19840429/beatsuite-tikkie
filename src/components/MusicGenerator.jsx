@@ -1,62 +1,88 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenAI } from "@google/genai";
 
+// Import Icons
+import iconScared from '../assets/icons/scared.png';
+import iconFeelBetter from '../assets/icons/feel_better.png';
+import iconBrave from '../assets/icons/brave.png';
+import iconSad from '../assets/icons/sad.png';
+import iconWorry from '../assets/icons/worry.png';
+import iconTired from '../assets/icons/tired.png';
+import iconNervous from '../assets/icons/nervous.png';
+import iconHappy from '../assets/icons/happy.png';
+
 const SYMPTOMS = {
     anxiety: {
-        label: "Anxiety & Fear",
+        label: "Scared",
         bpm: 70,
         prompt: "Generate a gentle lullaby in a Major (Ionian) or Pentatonic scale to create a sense of safety. Set tempo to 60–80 BPM with a steady, rocking rhythm and low, controlled volume. Feature warm, acoustic instruments like harp, celesta, or soft piano. Avoid dissonance or sudden loud noises; create a 'musical blanket' of security.",
         lampIntensity: 0.5,
-        lampHue: 35
+        lampHue: 35,
+        color: '#E0BBE4', // Pastel Purple
+        icon: iconScared
     },
     painRelief: {
-        label: "Pain Relief",
+        label: "Ouchie",
         bpm: 60,
         prompt: "Create soothing instrumental music in Mixolydian or Major mode to induce a dreamy, floating quality. Use a slow tempo (60 BPM) with constant, low dynamics and no percussion. Incorporate long, sustained notes (pad textures) to mimic deep sleep or ocean waves, helping the child drift away from pain.",
         lampIntensity: 0.0,
-        lampHue: 0
+        lampHue: 0,
+        color: '#957DAD', // Pastel Violet
+        icon: iconFeelBetter
     },
     painTolerance: {
-        label: "Pain Tolerance",
+        label: "Check-up",
         bpm: 110,
         prompt: "Generate an engaging musical story that modulates between keys to keep the child cognitively distracted. Shift styles from a slow intro to an upbeat march and back. Use varied rhythms and playful instruments like xylophone, flute, or pizzicato strings to occupy attention during the procedure.",
         lampIntensity: 1.0,
-        lampHue: 45
+        lampHue: 45,
+        color: '#D291BC', // Pastel Pink
+        icon: iconBrave
     },
     depression: {
-        label: "Depression / Withdrawal",
+        label: "Sad",
         bpm: 105,
         prompt: "Generate bright, energetic pop music in a Major (Ionian) key to evoke feelings of happiness and triumph. Use a moderate tempo (100-110 BPM) with a bouncy, syncopated rhythm. Incorporate heroic orchestration (brass, drums) or a 'Disney-style' feel to stimulate emotional expression and joy.",
         lampIntensity: 3.0,
-        lampHue: 210
+        lampHue: 210,
+        color: '#FEC8D8', // Pastel Rose
+        icon: iconSad
     },
     stress: {
-        label: "Physiological Stress",
+        label: "Worry",
         bpm: 65,
         prompt: "Create simple, meditative music at 60–70 BPM using a Pentatonic scale to ensure zero tension or dissonance. Combine nature sounds (gentle rain or stream) with a simple, repetitive melody on a wooden flute or soft synth to help entrain the child's breathing and lower heart rate.",
         lampIntensity: 1.5,
-        lampHue: 55
+        lampHue: 55,
+        color: '#FFDFD3', // Pastel Peach
+        icon: iconWorry
     },
     fatigue: {
-        label: "Fatigue",
+        label: "Tired",
         bpm: 120,
         prompt: "Generate motivating dance music in Major (Ionian) or Dorian mode for a fun, groovy feel. Set tempo to 120 BPM with a strong, driving beat and bright dynamics. Use percussive textures (shakers, claps) and a 'call and response' structure to encourage physical movement and active play.",
         lampIntensity: 3.0,
-        lampHue: 220
+        lampHue: 220,
+        color: '#F0E68C', // Khaki/Yellow
+        icon: iconTired
     },
     distress: {
-        label: "Procedure Distress",
+        label: "Nervous",
         bpm: 110,
         prompt: "Generate a confident, rhythmic track in Major key with a strong pulse to provide predictability. Use a steady marching beat with clear structure (verse/chorus). Instruments: Snare drum, brass, and piano to empower the child and provide a sense of control.",
         lampIntensity: 1.0,
-        lampHue: 40
+        lampHue: 40,
+        color: '#ADD8E6', // Light Blue
+        icon: iconNervous
     },
     normal: {
-        label: "Normal / Relaxed",
+        label: "Happy",
         bpm: 90,
         prompt: "Generate balanced, pleasant background music in a Major key. Moderate tempo (90 BPM) with a steady rhythm. Use a mix of acoustic and electronic instruments for a modern, neutral feel suitable for everyday activity.",
         lampIntensity: 2.0,
-        lampHue: 50
+        lampHue: 50,
+        color: '#98FB98', // Pale Green
+        icon: iconHappy
     }
 };
 
@@ -260,48 +286,61 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
 
     return (
         <div style={{
-            padding: '16px',
+            padding: '24px',
             background: 'var(--color-surface)',
             color: 'var(--color-text-main)',
-            borderRadius: 'var(--radius-lg)',
+            borderRadius: '32px',
             boxSizing: 'border-box',
-            width: '320px',
-            boxShadow: 'var(--shadow-card)',
-            border: '2px solid white',
-            fontFamily: 'var(--font-family)'
+            width: '360px',
+            boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+            border: '4px solid white',
+            fontFamily: "'Comic Sans MS', 'Chalkboard SE', sans-serif"
         }}>
             <h2 style={{
-                margin: '0 0 16px 0',
-                fontSize: '1rem',
-                fontWeight: 700,
+                margin: '0 0 24px 0',
+                fontSize: '1.5rem',
+                fontWeight: 800,
                 color: 'var(--color-primary)',
-                textAlign: 'center'
+                textAlign: 'center',
+                textShadow: '1px 1px 0px rgba(0,0,0,0.1)'
             }}>
                 How are you feeling?
             </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '16px' }}>
-                {Object.entries(SYMPTOMS).map(([key, data]) => (
-                    <button
-                        key={key}
-                        onClick={() => handleSymptomClick(key)}
-                        style={{
-                            padding: '10px',
-                            background: activeSymptom === key ? 'var(--color-primary)' : 'var(--color-background)',
-                            color: activeSymptom === key ? 'white' : 'var(--color-text-main)',
-                            border: 'none',
-                            borderRadius: 'var(--radius-xl)',
-                            cursor: 'pointer',
-                            fontSize: '0.8rem',
-                            fontWeight: 600,
-                            textAlign: 'center',
-                            transition: 'all 0.2s ease',
-                            boxShadow: activeSymptom === key ? '0 4px 12px rgba(139, 128, 249, 0.3)' : 'none',
-                            transform: activeSymptom === key ? 'scale(1.02)' : 'scale(1)'
-                        }}
-                    >
-                        {data.label}
-                    </button>
-                ))}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '24px' }}>
+                {Object.entries(SYMPTOMS)
+                    .filter(([key]) => key !== 'painTolerance') // Hide Check-up
+                    .map(([key, data]) => (
+                        <button
+                            key={key}
+                            onClick={() => handleSymptomClick(key)}
+                            style={{
+                                padding: '12px',
+                                background: data.color,
+                                color: '#333', // Dark text for contrast on pastel
+                                border: activeSymptom === key ? '4px solid #fff' : '4px solid white',
+                                borderRadius: '24px',
+                                cursor: 'pointer',
+                                fontSize: '1.1rem',
+                                fontWeight: 700,
+                                textAlign: 'center',
+                                transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)', // Bouncy transition
+                                boxShadow: activeSymptom === key
+                                    ? '0 8px 0 rgba(0,0,0,0.15), 0 12px 12px rgba(0,0,0,0.1)'
+                                    : '0 4px 0 rgba(0,0,0,0.1)',
+                                transform: activeSymptom === key ? 'translateY(2px)' : 'translateY(0)',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '8px',
+                                height: '110px',
+                                gridColumn: key === 'normal' ? 'span 3' : 'auto'
+                            }}
+                        >
+                            <img src={data.icon} alt={data.label} style={{ width: '48px', height: '48px', objectFit: 'contain', borderRadius: '50%' }} />
+                            <span>{data.label}</span>
+                        </button>
+                    ))}
             </div>
 
             {activeSymptom !== 'normal' && isPlaying && (
@@ -313,24 +352,26 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
                             if (setIsClockRunning) setIsClockRunning(true);
                         }}
                         style={{
-                            padding: '10px 16px',
+                            padding: '12px 24px',
                             background: '#FF8080',
                             color: 'white',
-                            border: 'none',
-                            borderRadius: 'var(--radius-full)',
+                            border: '3px solid white',
+                            borderRadius: '50px',
                             cursor: 'pointer',
-                            fontWeight: '700',
-                            fontSize: '0.85rem',
+                            fontWeight: '800',
+                            fontSize: '1rem',
                             flex: 1,
-                            boxShadow: '0 4px 12px rgba(255, 128, 128, 0.3)',
-                            transition: 'transform 0.2s'
+                            boxShadow: '0 4px 0 rgba(0,0,0,0.1)',
+                            transition: 'transform 0.2s',
+                            textTransform: 'uppercase',
+                            letterSpacing: '1px'
                         }}
                     >
                         Stop Music
                     </button>
                 </div>
             )}
-            <div style={{ marginTop: '12px', fontSize: '0.75rem', color: 'var(--color-text-secondary)', textAlign: 'center', fontWeight: 500 }}>
+            <div style={{ marginTop: '16px', fontSize: '0.8rem', color: '#888', textAlign: 'center', fontWeight: 600 }}>
                 Status: {status}
             </div>
         </div>
