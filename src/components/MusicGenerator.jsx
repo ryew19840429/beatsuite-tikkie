@@ -306,7 +306,7 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
             }}>
                 How are you feeling?
             </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '24px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', marginBottom: '12px' }}>
                 {Object.entries(SYMPTOMS)
                     .filter(([key]) => key !== 'painTolerance') // Hide Check-up
                     .map(([key, data]) => (
@@ -314,30 +314,30 @@ const MusicGenerator = ({ setLampIntensity, setLampHue, setIsClockRunning, activ
                             key={key}
                             onClick={() => handleSymptomClick(key)}
                             style={{
-                                padding: '12px',
+                                padding: '8px',
                                 background: data.color,
                                 color: '#333', // Dark text for contrast on pastel
                                 border: activeSymptom === key ? '4px solid #fff' : '4px solid white',
-                                borderRadius: '24px',
+                                borderRadius: '20px',
                                 cursor: 'pointer',
-                                fontSize: '1.1rem',
+                                fontSize: '1rem',
                                 fontWeight: 700,
                                 textAlign: 'center',
                                 transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)', // Bouncy transition
                                 boxShadow: activeSymptom === key
-                                    ? '0 8px 0 rgba(0,0,0,0.15), 0 12px 12px rgba(0,0,0,0.1)'
-                                    : '0 4px 0 rgba(0,0,0,0.1)',
+                                    ? '0 6px 0 rgba(0,0,0,0.15), 0 8px 8px rgba(0,0,0,0.1)'
+                                    : '0 3px 0 rgba(0,0,0,0.1)',
                                 transform: activeSymptom === key ? 'translateY(2px)' : 'translateY(0)',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                gap: '8px',
-                                height: '110px',
+                                gap: '4px',
+                                height: '85px',
                                 gridColumn: key === 'normal' ? 'span 3' : 'auto'
                             }}
                         >
-                            <img src={data.icon} alt={data.label} style={{ width: '48px', height: '48px', objectFit: 'contain', borderRadius: '50%' }} />
+                            <img src={data.icon} alt={data.label} style={{ width: '36px', height: '36px', objectFit: 'contain', borderRadius: '50%' }} />
                             <span>{data.label}</span>
                         </button>
                     ))}

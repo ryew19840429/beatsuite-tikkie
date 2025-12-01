@@ -83,6 +83,8 @@ function App() {
         zIndex: 1000,
         alignItems: 'flex-end',
         transform: 'scale(0.9)',
+        alignItems: 'flex-end',
+        transform: 'scale(0.9)',
         transformOrigin: 'top right'
       }}>
         <MusicGenerator

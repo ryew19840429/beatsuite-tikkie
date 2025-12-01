@@ -50,7 +50,7 @@ const SymptomExplanation = ({ activeSymptom }) => {
 
     return (
         <div style={{
-            width: '320px', // Matched to MusicGenerator
+            width: '360px', // Matched to MusicGenerator
             background: 'var(--color-surface)',
             color: 'var(--color-text-main)',
             padding: '16px',
